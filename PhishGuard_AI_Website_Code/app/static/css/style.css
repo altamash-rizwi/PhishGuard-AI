@@ -1,0 +1,366 @@
+/* =========================================================
+   PhishGuard AI - Shared Stylesheet
+   ========================================================= */
+
+
+/* =========================================================
+   1. ROOT VARIABLES
+   ========================================================= */
+
+:root {
+    --bg: #07111f;
+    --panel: #0e1c30;
+    --panel2: #12253d;
+    --text: #e8edf5;
+    --muted: #8fa0b8;
+    --accent: #00d4ff;
+    --border: #243d5c;
+}
+
+
+/* =========================================================
+   2. GLOBAL / BASIC STYLES
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    line-height: 1.65;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   3. COMMON CONTAINER
+   ========================================================= */
+
+.container {
+    width: min(1180px, 92%);
+    margin: auto;
+}
+
+
+/* =========================================================
+   4. HEADER
+   ========================================================= */
+
+.site-header {
+    background: #07111f;
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 70px;
+    gap: 20px;
+}
+
+
+/* =========================================================
+   5. BRAND / LOGO
+   ========================================================= */
+
+.brand {
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--text);
+}
+
+
+/* =========================================================
+   6. NAVIGATION
+   ========================================================= */
+
+.main-nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    padding: 8px 11px;
+    color: var(--muted);
+}
+
+.nav-link.active,
+.nav-link:hover {
+    color: var(--text);
+    background: var(--panel2);
+    border-radius: 8px;
+}
+
+
+/* =========================================================
+   7. HERO / PAGE HEADING
+   ========================================================= */
+
+.hero,
+.page-heading {
+    padding: 65px 0 35px;
+}
+
+.eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+h1 {
+    font-size: clamp(34px, 5vw, 62px);
+    line-height: 1.05;
+}
+
+.hero p,
+.page-heading p {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 850px;
+}
+
+
+/* =========================================================
+   8. BUTTON
+   ========================================================= */
+
+.button {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 9px;
+    background: var(--accent);
+    color: #03121d;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   9. GRID LAYOUTS
+   ========================================================= */
+
+.stats-grid,
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.card-grid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+
+/* =========================================================
+   10. CARDS
+   ========================================================= */
+
+.stat-card,
+.info-card,
+.scanner-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+}
+
+.stat-card span,
+.card-number {
+    color: var(--accent);
+    font-weight: 800;
+}
+
+.stat-card p,
+.info-card p {
+    color: var(--muted);
+}
+
+.info-card {
+    min-height: 165px;
+}
+
+.card-note {
+    border-left: 3px solid var(--accent);
+    padding-left: 12px;
+}
+
+
+/* =========================================================
+   11. CONTENT SECTION
+   ========================================================= */
+
+.content-section {
+    padding: 42px 0;
+}
+
+
+/* =========================================================
+   12. SCANNER
+   ========================================================= */
+
+.scanner-panel {
+    margin: 20px 0 35px;
+}
+
+.scan-form {
+    display: grid;
+    gap: 12px;
+}
+
+.scan-form input {
+    background: #06101d;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 14px;
+    color: var(--text);
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   13. PRIVACY NOTE
+   ========================================================= */
+
+.privacy-note {
+    margin-top: 20px;
+    padding: 14px;
+    background: var(--panel2);
+    border-radius: 9px;
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   14. TABLE
+   ========================================================= */
+
+.table-wrap {
+    overflow: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--panel);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 760px;
+}
+
+th,
+td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+
+th {
+    background: var(--panel2);
+    color: var(--accent);
+}
+
+
+/* =========================================================
+   15. FAQ
+   ========================================================= */
+
+.faq-list {
+    display: grid;
+    gap: 10px;
+    padding-bottom: 35px;
+}
+
+.faq-item {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.faq-item summary {
+    cursor: pointer;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   16. FOOTER
+   ========================================================= */
+
+.site-footer {
+    margin-top: 60px;
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.footer-grid p {
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   17. DOMAIN STATUS
+   ========================================================= */
+
+.domain-status-value {
+    font-size: clamp(18px, 2vw, 28px);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+.stat-card h2 {
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   18. RESPONSIVE DESIGN
+   ========================================================= */
+
+
+/* ---------- Tablet / Small Laptop ---------- */
+
+@media (max-width: 900px) {
+
+    .stats-grid,
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nav-container {
+        flex-direction: column;
+        padding: 15px 0;
+        align-items: flex-start;
+    }
+}
+
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 600px) {
+
+    .stats-grid,
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 38px;
+    }
+}

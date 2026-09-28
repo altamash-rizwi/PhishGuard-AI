@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Result | PhishGuard AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="site-header">
+    <div class="container nav-container">
+        <a class="brand" href="{{ url_for('home') }}">PhishGuard AI</a>
+        <nav class="main-nav">
+            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+            <a class="nav-link" href="{{ url_for('scanner') }}">Scanner</a>
+            <a class="nav-link active" href="{{ url_for('scan_result') }}">Result</a>
+            <a class="nav-link" href="{{ url_for('history') }}">History</a>
+        </nav>
+    </div>
+</header>
+<main class="container">
+<section class="page-heading">
+    <span class="eyebrow">LIVE URL ANALYSIS</span>
+    <h1>{{ result.label }}</h1>
+    <p>{{ result.message }}</p>
+</section>
+<section class="stats-grid">
+    <article class="stat-card"><span>URL</span><h2>{{ result.url }}</h2><p>Submitted URL</p></article>
+    <article class="stat-card"><span>MODEL SCORE</span><h2>{{ "%.2f"|format(result.model_score * 100) }}%</h2><p>Classifier output; not proof of safety</p></article>
+    <article class="stat-card"><span>THREAT</span><h2>{{ result.threat }}</h2><p>Combined model + domain assessment</p></article>
+    <article class="stat-card"><span>DOMAIN STATUS</span><h2 class="domain-status-value">{{ result.domain_status|replace('_', ' ')|title }}</h2><p>{{ result.domain_message }}</p></article>
+</section>
+<section class="content-section">
+    <div class="section-heading"><h2>Extracted URL Features</h2><p>These indicators include DNS verification and URL characteristics. DNS resolution does not prove that a website is trustworthy.</p></div>
+    <div class="card-grid">
+    {% for key, value in result.features.items() %}
+        <article class="info-card"><span class="card-number">{{ loop.index }}</span><h3>{{ key }}</h3><p>{{ value }}</p></article>
+    {% endfor %}
+    </div>
+</section>
+<section class="content-section">
+    <div class="section-heading"><h2>Security Recommendations</h2><p>Use these recommendations before sharing sensitive information.</p></div>
+    <div class="card-grid">
+    {% for item in result.recommendations %}
+        <article class="info-card"><span class="card-number">{{ loop.index }}</span><h3>Recommendation {{ loop.index }}</h3><p>{{ item }}</p></article>
+    {% endfor %}
+    </div>
+</section>
+<section class="content-section">
+    <div class="scanner-panel">
+        <h2>Important</h2>
+        <p>This is an academic prototype. The ML model analyses URL patterns; DNS verification checks whether the hostname resolves. Neither check proves that a website is safe. Do not enter passwords, OTPs, card numbers or other sensitive information into suspicious pages.</p>
+        <a class="button primary" href="{{ url_for('scanner') }}">Scan another URL</a>
+    </div>
+</section>
+</main>
+<footer class="site-footer"><div class="container footer-grid">
+<section><h2>PhishGuard AI</h2><p>AI-assisted URL analysis for safer browsing decisions.</p></section>
+<section><h2>Safety Notice</h2><p>Automated analysis is an additional signal, not a guarantee.</p></section>
+<section><h2>PBL Prototype</h2><p>AI-Based Phishing Detection and Secure Website Analysis System.</p></section>
+</div></footer>
+</body>
+</html>

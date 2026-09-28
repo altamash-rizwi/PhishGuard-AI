@@ -1,0 +1,29 @@
+PHISHGUARD AI - FINAL RUN GUIDE
+================================
+
+1. Open this project folder in VS Code.
+2. Open PowerShell in the project root.
+3. Install dependencies:
+   python -m pip install -r requirements.txt
+
+4. Download the official large dataset:
+   python scripts/download_datasets.py
+
+5. Train/evaluate:
+   python scripts/train_and_evaluate.py --max-rows 100000 --trees 200
+
+   For all available rows:
+   python scripts/train_and_evaluate.py --max-rows 0 --trees 200
+
+6. Start the application:
+   python app/app.py
+
+7. Open:
+   http://127.0.0.1:5000
+
+IMPORTANT:
+- Do not claim 100% accuracy.
+- Use reports/metrics.json and reports/classification_report.txt
+  for your actual trained-model results.
+- The model is an academic prototype and is not a guarantee that
+  any URL is safe or malicious.

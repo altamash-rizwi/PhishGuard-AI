@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home | PhishGuard AI</title>
+<link rel="stylesheet" href="{{ url_for("static", filename="css/style.css") }}">
+</head>
+<body>
+<header class="site-header"><div class="container nav-container">
+<a class="brand" href="{{ url_for("home") }}">PhishGuard AI</a>
+<nav class="main-nav">
+<a class="nav-link active" href="{{ url_for("home") }}">Home</a>
+<a class="nav-link" href="{{ url_for("scanner") }}">Scanner</a>
+<a class="nav-link" href="{{ url_for("results_info") }}">Results</a>
+<a class="nav-link" href="{{ url_for("history") }}">History</a>
+<a class="nav-link" href="{{ url_for("security") }}">Security</a>
+<a class="nav-link" href="{{ url_for("education") }}">Education</a>
+<a class="nav-link" href="{{ url_for("faq") }}">FAQ</a>
+<a class="nav-link" href="{{ url_for("about") }}">About</a>
+</nav></div></header>
+<main class="container">
+<section class="hero"><span class="eyebrow">AI-ASSISTED CYBERSECURITY PROTOTYPE</span>
+<h1>AI-Based Phishing Detection &amp; Secure Website Analysis</h1>
+<p>Check a suspicious URL before interacting with it. PhishGuard AI analyzes URL and security indicators and provides a preliminary threat assessment.</p>
+<a class="button primary" href="{{ url_for("scanner") }}">Check a URL</a></section>
+<section class="stats-grid">
+<article class="stat-card"><span>01</span><h2>URL Analysis</h2><p>Analyze URL indicators.</p></article>
+<article class="stat-card"><span>02</span><h2>ML Classification</h2><p>TF-IDF + Random Forest prototype.</p></article>
+<article class="stat-card"><span>03</span><h2>Domain Context</h2><p>Available domain-age information.</p></article>
+<article class="stat-card"><span>04</span><h2>Safety Guidance</h2><p>User-oriented recommendations.</p></article>
+</section>
+<section id="phishing" class="content-section">
+<div class="section-heading">
+<h2>Why phishing matters</h2>
+<p>Phishing can lead to credential theft, payment fraud and loss of personal information.</p>
+</div>
+<div class="card-grid">
+<article class="info-card" id="phishing-1">
+<span class="card-number">0001</span>
+<h3>Credential phishing</h3>
+<p>A fake login page attempts to collect usernames and passwords.</p>
+<p class="card-note">Verify the domain.</p>
+</article>
+<article class="info-card" id="phishing-2">
+<span class="card-number">0002</span>
+<h3>Banking phishing</h3>
+<p>A fraudulent page imitates a bank or payment provider.</p>
+<p class="card-note">Use the official banking application.</p>
+</article>
+<article class="info-card" id="phishing-3">
+<span class="card-number">0003</span>
+<h3>Shopping phishing</h3>
+<p>Fake stores or offers attempt to collect payment information.</p>
+<p class="card-note">Check the merchant independently.</p>
+</article>
+<article class="info-card" id="phishing-4">
+<span class="card-number">0004</span>
+<h3>Account verification scam</h3>
+<p>A message claims an account must be verified immediately.</p>
+<p class="card-note">Navigate to the service independently.</p>
+</article>
+<article class="info-card" id="phishing-5">
+<span class="card-number">0005</span>
+<h3>Delivery scam</h3>
+<p>A fake parcel notification asks for payment or details.</p>
+<p class="card-note">Check delivery status through the official courier.</p>
+</article>
+<article class="info-card" id="phishing-6">
+<span class="card-number">0006</span>
+<h3>Prize scam</h3>
+<p>A message claims that the user won a reward.</p>
+<p class="card-note">Unexpected prizes deserve caution.</p>
+</article>
+<article class="info-card" id="phishing-7">
+<span class="card-number">0007</span>
+<h3>Job phishing</h3>
+<p>Fake recruiters request documents, fees or credentials.</p>
+<p class="card-note">Verify the organization.</p>
+</article>
+<article class="info-card" id="phishing-8">
+<span class="card-number">0008</span>
+<h3>Social-media phishing</h3>
+<p>Attackers imitate social platforms or account warnings.</p>
+<p class="card-note">Open the platform directly.</p>
+</article>
+<article class="info-card" id="phishing-9">
+<span class="card-number">0009</span>
+<h3>Email phishing</h3>
+<p>A deceptive email uses urgency or authority.</p>
+<p class="card-note">Inspect sender and destination.</p>
+</article>
+<article class="info-card" id="phishing-10">
+<span class="card-number">0010</span>
+<h3>Smishing</h3>
+<p>Phishing is delivered through SMS or messaging apps.</p>
+<p class="card-note">Treat unexpected links as untrusted.</p>
+</article>
+<article class="info-card" id="phishing-11">
+<span class="card-number">0011</span>
+<h3>Spear phishing</h3>
+<p>A targeted attack uses personalized information.</p>
+<p class="card-note">Verify unusual requests separately.</p>
+</article>
+<article class="info-card" id="phishing-12">
+<span class="card-number">0012</span>
+<h3>QR phishing</h3>
+<p>A QR code redirects to a fraudulent destination.</p>
+<p class="card-note">Preview the destination first.</p>
+</article>
+</div>
+</section>
+<section id="indicators" class="content-section">
+<div class="section-heading">
+<h2>Security indicators</h2>
+<p>No single indicator is a final verdict.</p>
+</div>
+<div class="card-grid">
+<article class="info-card" id="indicators-1">
+<span class="card-number">0001</span>
+<h3>URL Length</h3>
+<p>Very long URLs can sometimes hide suspicious paths or parameters.</p>
+<p class="card-note">Length alone is not proof of phishing.</p>
+</article>
+<article class="info-card" id="indicators-2">
+<span class="card-number">0002</span>
+<h3>HTTPS</h3>
+<p>HTTPS encrypts communication between browser and server.</p>
+<p class="card-note">HTTPS does not prove that a site is trustworthy.</p>
+</article>
+<article class="info-card" id="indicators-3">
+<span class="card-number">0003</span>
+<h3>IP Address</h3>
+<p>A raw IP address can be unusual for a public login page.</p>
+<p class="card-note">Treat unexpected IP-based links cautiously.</p>
+</article>
+<article class="info-card" id="indicators-4">
+<span class="card-number">0004</span>
+<h3>@ Symbol</h3>
+<p>An @ symbol can contribute to misleading URL structures.</p>
+<p class="card-note">Inspect the actual hostname.</p>
+</article>
+<article class="info-card" id="indicators-5">
+<span class="card-number">0005</span>
+<h3>Hyphen Count</h3>
+<p>Hyphenated domains can sometimes imitate recognizable names.</p>
+<p class="card-note">Consider this with other indicators.</p>
+</article>
+<article class="info-card" id="indicators-6">
+<span class="card-number">0006</span>
+<h3>Dot Count</h3>
+<p>Multiple dots can make a URL difficult to interpret.</p>
+<p class="card-note">Identify the registered domain.</p>
+</article>
+<article class="info-card" id="indicators-7">
+<span class="card-number">0007</span>
+<h3>Subdomains</h3>
+<p>Deceptive subdomains can contain brand-like words.</p>
+<p class="card-note">Read the hostname carefully.</p>
+</article>
+<article class="info-card" id="indicators-8">
+<span class="card-number">0008</span>
+<h3>Suspicious Words</h3>
+<p>Words such as login, verify, reward or update may appear in deceptive links.</p>
+<p class="card-note">Words are contextual signals.</p>
+</article>
+<article class="info-card" id="indicators-9">
+<span class="card-number">0009</span>
+<h3>Query Length</h3>
+<p>Long query strings can contain many parameters.</p>
+<p class="card-note">Inspect unexpected parameters.</p>
+</article>
+<article class="info-card" id="indicators-10">
+<span class="card-number">0010</span>
+<h3>Path Length</h3>
+<p>Long paths can hide the meaningful destination.</p>
+<p class="card-note">Review the complete URL.</p>
+</article>
+<article class="info-card" id="indicators-11">
+<span class="card-number">0011</span>
+<h3>Domain Age</h3>
+<p>A newly registered domain can be an additional caution signal.</p>
+<p class="card-note">Domain age is not a verdict.</p>
+</article>
+<article class="info-card" id="indicators-12">
+<span class="card-number">0012</span>
+<h3>Redirects</h3>
+<p>Unexpected redirects can hide the final destination.</p>
+<p class="card-note">Verify the final destination.</p>
+</article>
+<article class="info-card" id="indicators-13">
+<span class="card-number">0013</span>
+<h3>Punycode</h3>
+<p>Internationalized domains can create visually confusing names.</p>
+<p class="card-note">Inspect normalized hostnames.</p>
+</article>
+<article class="info-card" id="indicators-14">
+<span class="card-number">0014</span>
+<h3>Port Number</h3>
+<p>Non-standard ports can be legitimate but deserve context.</p>
+<p class="card-note">A port alone is not proof.</p>
+</article>
+<article class="info-card" id="indicators-15">
+<span class="card-number">0015</span>
+<h3>Fragment</h3>
+<p>Fragments can contain page state or navigation.</p>
+<p class="card-note">Treat them as one part of analysis.</p>
+</article>
+</div>
+</section>
+<section id="checklist" class="content-section">
+<div class="section-heading">
+<h2>Safer browsing checklist</h2>
+<p>Use these habits before clicking unexpected links.</p>
+</div>
+<div class="card-grid">
+<article class="info-card" id="checklist-1">
+<span class="card-number">0001</span>
+<h3>Practice 1</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+</article>
+<article class="info-card" id="checklist-2">
+<span class="card-number">0002</span>
+<h3>Practice 2</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+</article>
+<article class="info-card" id="checklist-3">
+<span class="card-number">0003</span>
+<h3>Practice 3</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+</article>
+<article class="info-card" id="checklist-4">
+<span class="card-number">0004</span>
+<h3>Practice 4</h3>
+<p>Use official applications for sensitive services.</p>
+</article>
+<article class="info-card" id="checklist-5">
+<span class="card-number">0005</span>
+<h3>Practice 5</h3>
+<p>Keep browsers and operating systems updated.</p>
+</article>
+<article class="info-card" id="checklist-6">
+<span class="card-number">0006</span>
+<h3>Practice 6</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+</article>
+<article class="info-card" id="checklist-7">
+<span class="card-number">0007</span>
+<h3>Practice 7</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+</article>
+<article class="info-card" id="checklist-8">
+<span class="card-number">0008</span>
+<h3>Practice 8</h3>
+<p>Verify unusual payment requests independently.</p>
+</article>
+<article class="info-card" id="checklist-9">
+<span class="card-number">0009</span>
+<h3>Practice 9</h3>
+<p>Do not install software from unsolicited links.</p>
+</article>
+<article class="info-card" id="checklist-10">
+<span class="card-number">0010</span>
+<h3>Practice 10</h3>
+<p>Report suspicious messages through official channels.</p>
+</article>
+<article class="info-card" id="checklist-11">
+<span class="card-number">0011</span>
+<h3>Practice 11</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+</article>
+<article class="info-card" id="checklist-12">
+<span class="card-number">0012</span>
+<h3>Practice 12</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+</article>
+<article class="info-card" id="checklist-13">
+<span class="card-number">0013</span>
+<h3>Practice 13</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+</article>
+<article class="info-card" id="checklist-14">
+<span class="card-number">0014</span>
+<h3>Practice 14</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+</article>
+<article class="info-card" id="checklist-15">
+<span class="card-number">0015</span>
+<h3>Practice 15</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+</article>
+</div>
+</section>
+<section class="content-section" id="extended-1">
+<div class="section-heading"><h2>Extended Security Guide 1</h2><p>Additional practical guidance for responsible URL analysis and phishing awareness.</p></div>
+<div class="card-grid">
+<article class="info-card" id="guide-1-1">
+<span class="card-number">00001</span>
+<h3>Security practice 00001</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-2">
+<span class="card-number">00002</span>
+<h3>Security practice 00002</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-3">
+<span class="card-number">00003</span>
+<h3>Security practice 00003</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-4">
+<span class="card-number">00004</span>
+<h3>Security practice 00004</h3>
+<p>Use official applications for sensitive services.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-5">
+<span class="card-number">00005</span>
+<h3>Security practice 00005</h3>
+<p>Keep browsers and operating systems updated.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-6">
+<span class="card-number">00006</span>
+<h3>Security practice 00006</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-7">
+<span class="card-number">00007</span>
+<h3>Security practice 00007</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-8">
+<span class="card-number">00008</span>
+<h3>Security practice 00008</h3>
+<p>Verify unusual payment requests independently.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-9">
+<span class="card-number">00009</span>
+<h3>Security practice 00009</h3>
+<p>Do not install software from unsolicited links.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-10">
+<span class="card-number">00010</span>
+<h3>Security practice 00010</h3>
+<p>Report suspicious messages through official channels.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-11">
+<span class="card-number">00011</span>
+<h3>Security practice 00011</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-12">
+<span class="card-number">00012</span>
+<h3>Security practice 00012</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-13">
+<span class="card-number">00013</span>
+<h3>Security practice 00013</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-14">
+<span class="card-number">00014</span>
+<h3>Security practice 00014</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-1-15">
+<span class="card-number">00015</span>
+<h3>Security practice 00015</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+</div>
+</section>
+<section class="content-section" id="extended-2">
+<div class="section-heading"><h2>Extended Security Guide 2</h2><p>Additional practical guidance for responsible URL analysis and phishing awareness.</p></div>
+<div class="card-grid">
+<article class="info-card" id="guide-2-1">
+<span class="card-number">00016</span>
+<h3>Security practice 00016</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-2">
+<span class="card-number">00017</span>
+<h3>Security practice 00017</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-3">
+<span class="card-number">00018</span>
+<h3>Security practice 00018</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-4">
+<span class="card-number">00019</span>
+<h3>Security practice 00019</h3>
+<p>Use official applications for sensitive services.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-5">
+<span class="card-number">00020</span>
+<h3>Security practice 00020</h3>
+<p>Keep browsers and operating systems updated.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-6">
+<span class="card-number">00021</span>
+<h3>Security practice 00021</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-7">
+<span class="card-number">00022</span>
+<h3>Security practice 00022</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-8">
+<span class="card-number">00023</span>
+<h3>Security practice 00023</h3>
+<p>Verify unusual payment requests independently.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-9">
+<span class="card-number">00024</span>
+<h3>Security practice 00024</h3>
+<p>Do not install software from unsolicited links.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-10">
+<span class="card-number">00025</span>
+<h3>Security practice 00025</h3>
+<p>Report suspicious messages through official channels.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-11">
+<span class="card-number">00026</span>
+<h3>Security practice 00026</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-12">
+<span class="card-number">00027</span>
+<h3>Security practice 00027</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-13">
+<span class="card-number">00028</span>
+<h3>Security practice 00028</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-14">
+<span class="card-number">00029</span>
+<h3>Security practice 00029</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-2-15">
+<span class="card-number">00030</span>
+<h3>Security practice 00030</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+</div>
+</section>
+<section class="content-section" id="extended-3">
+<div class="section-heading"><h2>Extended Security Guide 3</h2><p>Additional practical guidance for responsible URL analysis and phishing awareness.</p></div>
+<div class="card-grid">
+<article class="info-card" id="guide-3-1">
+<span class="card-number">00031</span>
+<h3>Security practice 00031</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-2">
+<span class="card-number">00032</span>
+<h3>Security practice 00032</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-3">
+<span class="card-number">00033</span>
+<h3>Security practice 00033</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-4">
+<span class="card-number">00034</span>
+<h3>Security practice 00034</h3>
+<p>Use official applications for sensitive services.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-5">
+<span class="card-number">00035</span>
+<h3>Security practice 00035</h3>
+<p>Keep browsers and operating systems updated.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-6">
+<span class="card-number">00036</span>
+<h3>Security practice 00036</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-7">
+<span class="card-number">00037</span>
+<h3>Security practice 00037</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-8">
+<span class="card-number">00038</span>
+<h3>Security practice 00038</h3>
+<p>Verify unusual payment requests independently.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-9">
+<span class="card-number">00039</span>
+<h3>Security practice 00039</h3>
+<p>Do not install software from unsolicited links.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-10">
+<span class="card-number">00040</span>
+<h3>Security practice 00040</h3>
+<p>Report suspicious messages through official channels.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-11">
+<span class="card-number">00041</span>
+<h3>Security practice 00041</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-12">
+<span class="card-number">00042</span>
+<h3>Security practice 00042</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-13">
+<span class="card-number">00043</span>
+<h3>Security practice 00043</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-14">
+<span class="card-number">00044</span>
+<h3>Security practice 00044</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-3-15">
+<span class="card-number">00045</span>
+<h3>Security practice 00045</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+</div>
+</section>
+<section class="content-section" id="extended-4">
+<div class="section-heading"><h2>Extended Security Guide 4</h2><p>Additional practical guidance for responsible URL analysis and phishing awareness.</p></div>
+<div class="card-grid">
+<article class="info-card" id="guide-4-1">
+<span class="card-number">00046</span>
+<h3>Security practice 00046</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-2">
+<span class="card-number">00047</span>
+<h3>Security practice 00047</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-3">
+<span class="card-number">00048</span>
+<h3>Security practice 00048</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-4">
+<span class="card-number">00049</span>
+<h3>Security practice 00049</h3>
+<p>Use official applications for sensitive services.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-5">
+<span class="card-number">00050</span>
+<h3>Security practice 00050</h3>
+<p>Keep browsers and operating systems updated.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-6">
+<span class="card-number">00051</span>
+<h3>Security practice 00051</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-7">
+<span class="card-number">00052</span>
+<h3>Security practice 00052</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-8">
+<span class="card-number">00053</span>
+<h3>Security practice 00053</h3>
+<p>Verify unusual payment requests independently.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-9">
+<span class="card-number">00054</span>
+<h3>Security practice 00054</h3>
+<p>Do not install software from unsolicited links.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-10">
+<span class="card-number">00055</span>
+<h3>Security practice 00055</h3>
+<p>Report suspicious messages through official channels.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-11">
+<span class="card-number">00056</span>
+<h3>Security practice 00056</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-12">
+<span class="card-number">00057</span>
+<h3>Security practice 00057</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-13">
+<span class="card-number">00058</span>
+<h3>Security practice 00058</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-14">
+<span class="card-number">00059</span>
+<h3>Security practice 00059</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-4-15">
+<span class="card-number">00060</span>
+<h3>Security practice 00060</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+</div>
+</section>
+<section class="content-section" id="extended-5">
+<div class="section-heading"><h2>Extended Security Guide 5</h2><p>Additional practical guidance for responsible URL analysis and phishing awareness.</p></div>
+<div class="card-grid">
+<article class="info-card" id="guide-5-1">
+<span class="card-number">00061</span>
+<h3>Security practice 00061</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-2">
+<span class="card-number">00062</span>
+<h3>Security practice 00062</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-3">
+<span class="card-number">00063</span>
+<h3>Security practice 00063</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-4">
+<span class="card-number">00064</span>
+<h3>Security practice 00064</h3>
+<p>Use official applications for sensitive services.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-5">
+<span class="card-number">00065</span>
+<h3>Security practice 00065</h3>
+<p>Keep browsers and operating systems updated.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-6">
+<span class="card-number">00066</span>
+<h3>Security practice 00066</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-7">
+<span class="card-number">00067</span>
+<h3>Security practice 00067</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-8">
+<span class="card-number">00068</span>
+<h3>Security practice 00068</h3>
+<p>Verify unusual payment requests independently.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-9">
+<span class="card-number">00069</span>
+<h3>Security practice 00069</h3>
+<p>Do not install software from unsolicited links.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-10">
+<span class="card-number">00070</span>
+<h3>Security practice 00070</h3>
+<p>Report suspicious messages through official channels.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-11">
+<span class="card-number">00071</span>
+<h3>Security practice 00071</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-12">
+<span class="card-number">00072</span>
+<h3>Security practice 00072</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-13">
+<span class="card-number">00073</span>
+<h3>Security practice 00073</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-14">
+<span class="card-number">00074</span>
+<h3>Security practice 00074</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-5-15">
+<span class="card-number">00075</span>
+<h3>Security practice 00075</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+</div>
+</section>
+<section class="content-section" id="extended-6">
+<div class="section-heading"><h2>Extended Security Guide 6</h2><p>Additional practical guidance for responsible URL analysis and phishing awareness.</p></div>
+<div class="card-grid">
+<article class="info-card" id="guide-6-1">
+<span class="card-number">00076</span>
+<h3>Security practice 00076</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-2">
+<span class="card-number">00077</span>
+<h3>Security practice 00077</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-3">
+<span class="card-number">00078</span>
+<h3>Security practice 00078</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-4">
+<span class="card-number">00079</span>
+<h3>Security practice 00079</h3>
+<p>Use official applications for sensitive services.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-5">
+<span class="card-number">00080</span>
+<h3>Security practice 00080</h3>
+<p>Keep browsers and operating systems updated.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-6">
+<span class="card-number">00081</span>
+<h3>Security practice 00081</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-7">
+<span class="card-number">00082</span>
+<h3>Security practice 00082</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-8">
+<span class="card-number">00083</span>
+<h3>Security practice 00083</h3>
+<p>Verify unusual payment requests independently.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-9">
+<span class="card-number">00084</span>
+<h3>Security practice 00084</h3>
+<p>Do not install software from unsolicited links.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-10">
+<span class="card-number">00085</span>
+<h3>Security practice 00085</h3>
+<p>Report suspicious messages through official channels.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-11">
+<span class="card-number">00086</span>
+<h3>Security practice 00086</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-12">
+<span class="card-number">00087</span>
+<h3>Security practice 00087</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-13">
+<span class="card-number">00088</span>
+<h3>Security practice 00088</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-14">
+<span class="card-number">00089</span>
+<h3>Security practice 00089</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-6-15">
+<span class="card-number">00090</span>
+<h3>Security practice 00090</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+</div>
+</section>
+<section class="content-section" id="extended-7">
+<div class="section-heading"><h2>Extended Security Guide 7</h2><p>Additional practical guidance for responsible URL analysis and phishing awareness.</p></div>
+<div class="card-grid">
+<article class="info-card" id="guide-7-1">
+<span class="card-number">00091</span>
+<h3>Security practice 00091</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-2">
+<span class="card-number">00092</span>
+<h3>Security practice 00092</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-3">
+<span class="card-number">00093</span>
+<h3>Security practice 00093</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-4">
+<span class="card-number">00094</span>
+<h3>Security practice 00094</h3>
+<p>Use official applications for sensitive services.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-5">
+<span class="card-number">00095</span>
+<h3>Security practice 00095</h3>
+<p>Keep browsers and operating systems updated.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-6">
+<span class="card-number">00096</span>
+<h3>Security practice 00096</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-7">
+<span class="card-number">00097</span>
+<h3>Security practice 00097</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-8">
+<span class="card-number">00098</span>
+<h3>Security practice 00098</h3>
+<p>Verify unusual payment requests independently.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-9">
+<span class="card-number">00099</span>
+<h3>Security practice 00099</h3>
+<p>Do not install software from unsolicited links.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-10">
+<span class="card-number">00100</span>
+<h3>Security practice 00100</h3>
+<p>Report suspicious messages through official channels.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-11">
+<span class="card-number">00101</span>
+<h3>Security practice 00101</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-12">
+<span class="card-number">00102</span>
+<h3>Security practice 00102</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-13">
+<span class="card-number">00103</span>
+<h3>Security practice 00103</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-14">
+<span class="card-number">00104</span>
+<h3>Security practice 00104</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-7-15">
+<span class="card-number">00105</span>
+<h3>Security practice 00105</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+</div>
+</section>
+<section class="content-section" id="extended-8">
+<div class="section-heading"><h2>Extended Security Guide 8</h2><p>Additional practical guidance for responsible URL analysis and phishing awareness.</p></div>
+<div class="card-grid">
+<article class="info-card" id="guide-8-1">
+<span class="card-number">00106</span>
+<h3>Security practice 00106</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-2">
+<span class="card-number">00107</span>
+<h3>Security practice 00107</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-3">
+<span class="card-number">00108</span>
+<h3>Security practice 00108</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-4">
+<span class="card-number">00109</span>
+<h3>Security practice 00109</h3>
+<p>Use official applications for sensitive services.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-5">
+<span class="card-number">00110</span>
+<h3>Security practice 00110</h3>
+<p>Keep browsers and operating systems updated.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-6">
+<span class="card-number">00111</span>
+<h3>Security practice 00111</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-7">
+<span class="card-number">00112</span>
+<h3>Security practice 00112</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-8">
+<span class="card-number">00113</span>
+<h3>Security practice 00113</h3>
+<p>Verify unusual payment requests independently.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-9">
+<span class="card-number">00114</span>
+<h3>Security practice 00114</h3>
+<p>Do not install software from unsolicited links.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-10">
+<span class="card-number">00115</span>
+<h3>Security practice 00115</h3>
+<p>Report suspicious messages through official channels.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-11">
+<span class="card-number">00116</span>
+<h3>Security practice 00116</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-12">
+<span class="card-number">00117</span>
+<h3>Security practice 00117</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-13">
+<span class="card-number">00118</span>
+<h3>Security practice 00118</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-14">
+<span class="card-number">00119</span>
+<h3>Security practice 00119</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-8-15">
+<span class="card-number">00120</span>
+<h3>Security practice 00120</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+</div>
+</section>
+<section class="content-section" id="extended-9">
+<div class="section-heading"><h2>Extended Security Guide 9</h2><p>Additional practical guidance for responsible URL analysis and phishing awareness.</p></div>
+<div class="card-grid">
+<article class="info-card" id="guide-9-1">
+<span class="card-number">00121</span>
+<h3>Security practice 00121</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-2">
+<span class="card-number">00122</span>
+<h3>Security practice 00122</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-3">
+<span class="card-number">00123</span>
+<h3>Security practice 00123</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-4">
+<span class="card-number">00124</span>
+<h3>Security practice 00124</h3>
+<p>Use official applications for sensitive services.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-5">
+<span class="card-number">00125</span>
+<h3>Security practice 00125</h3>
+<p>Keep browsers and operating systems updated.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-6">
+<span class="card-number">00126</span>
+<h3>Security practice 00126</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-7">
+<span class="card-number">00127</span>
+<h3>Security practice 00127</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-8">
+<span class="card-number">00128</span>
+<h3>Security practice 00128</h3>
+<p>Verify unusual payment requests independently.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-9">
+<span class="card-number">00129</span>
+<h3>Security practice 00129</h3>
+<p>Do not install software from unsolicited links.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-10">
+<span class="card-number">00130</span>
+<h3>Security practice 00130</h3>
+<p>Report suspicious messages through official channels.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-11">
+<span class="card-number">00131</span>
+<h3>Security practice 00131</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-12">
+<span class="card-number">00132</span>
+<h3>Security practice 00132</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-13">
+<span class="card-number">00133</span>
+<h3>Security practice 00133</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-14">
+<span class="card-number">00134</span>
+<h3>Security practice 00134</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-9-15">
+<span class="card-number">00135</span>
+<h3>Security practice 00135</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+</div>
+</section>
+<section class="content-section" id="extended-10">
+<div class="section-heading"><h2>Extended Security Guide 10</h2><p>Additional practical guidance for responsible URL analysis and phishing awareness.</p></div>
+<div class="card-grid">
+<article class="info-card" id="guide-10-1">
+<span class="card-number">00136</span>
+<h3>Security practice 00136</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-2">
+<span class="card-number">00137</span>
+<h3>Security practice 00137</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-3">
+<span class="card-number">00138</span>
+<h3>Security practice 00138</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-4">
+<span class="card-number">00139</span>
+<h3>Security practice 00139</h3>
+<p>Use official applications for sensitive services.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-5">
+<span class="card-number">00140</span>
+<h3>Security practice 00140</h3>
+<p>Keep browsers and operating systems updated.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-6">
+<span class="card-number">00141</span>
+<h3>Security practice 00141</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-7">
+<span class="card-number">00142</span>
+<h3>Security practice 00142</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-8">
+<span class="card-number">00143</span>
+<h3>Security practice 00143</h3>
+<p>Verify unusual payment requests independently.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-9">
+<span class="card-number">00144</span>
+<h3>Security practice 00144</h3>
+<p>Do not install software from unsolicited links.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-10">
+<span class="card-number">00145</span>
+<h3>Security practice 00145</h3>
+<p>Report suspicious messages through official channels.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-11">
+<span class="card-number">00146</span>
+<h3>Security practice 00146</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-12">
+<span class="card-number">00147</span>
+<h3>Security practice 00147</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-13">
+<span class="card-number">00148</span>
+<h3>Security practice 00148</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-14">
+<span class="card-number">00149</span>
+<h3>Security practice 00149</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-10-15">
+<span class="card-number">00150</span>
+<h3>Security practice 00150</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+</div>
+</section>
+<section class="content-section" id="extended-11">
+<div class="section-heading"><h2>Extended Security Guide 11</h2><p>Additional practical guidance for responsible URL analysis and phishing awareness.</p></div>
+<div class="card-grid">
+<article class="info-card" id="guide-11-1">
+<span class="card-number">00151</span>
+<h3>Security practice 00151</h3>
+<p>Check the complete domain before entering sensitive information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-2">
+<span class="card-number">00152</span>
+<h3>Security practice 00152</h3>
+<p>Do not assume HTTPS means a website is legitimate.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-3">
+<span class="card-number">00153</span>
+<h3>Security practice 00153</h3>
+<p>Avoid unexpected links in messages and emails.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-4">
+<span class="card-number">00154</span>
+<h3>Security practice 00154</h3>
+<p>Use official applications for sensitive services.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-5">
+<span class="card-number">00155</span>
+<h3>Security practice 00155</h3>
+<p>Keep browsers and operating systems updated.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-6">
+<span class="card-number">00156</span>
+<h3>Security practice 00156</h3>
+<p>Use unique passwords and enable multi-factor authentication.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-7">
+<span class="card-number">00157</span>
+<h3>Security practice 00157</h3>
+<p>Be cautious of urgent requests that create fear or pressure.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-8">
+<span class="card-number">00158</span>
+<h3>Security practice 00158</h3>
+<p>Verify unusual payment requests independently.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-9">
+<span class="card-number">00159</span>
+<h3>Security practice 00159</h3>
+<p>Do not install software from unsolicited links.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-10">
+<span class="card-number">00160</span>
+<h3>Security practice 00160</h3>
+<p>Report suspicious messages through official channels.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-11">
+<span class="card-number">00161</span>
+<h3>Security practice 00161</h3>
+<p>If you clicked a suspicious link, stop before entering information.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-12">
+<span class="card-number">00162</span>
+<h3>Security practice 00162</h3>
+<p>If credentials were exposed, change the password through the official service.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-13">
+<span class="card-number">00163</span>
+<h3>Security practice 00163</h3>
+<p>For financial exposure, contact the institution through an official channel.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-14">
+<span class="card-number">00164</span>
+<h3>Security practice 00164</h3>
+<p>Monitor important accounts for unexpected activity.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+<article class="info-card" id="guide-11-15">
+<span class="card-number">00165</span>
+<h3>Security practice 00165</h3>
+<p>Teach family and colleagues how to inspect URLs.</p>
+<p class="card-note">Use this practice together with other indicators and independent verification.</p>
+</article>
+</div>
+</section>
+</main>
+<footer class="site-footer"><div class="container footer-grid">
+<section><h2>PhishGuard AI</h2><p>AI-assisted URL analysis for safer browsing decisions.</p></section>
+<section><h2>Safety Notice</h2><p>Automated analysis is an additional signal, not a guarantee.</p></section>
+<section><h2>Project</h2><p>AI-Based Phishing Detection and Secure Website Analysis System.</p></section>
+</div></footer>
+</body>
+</html>

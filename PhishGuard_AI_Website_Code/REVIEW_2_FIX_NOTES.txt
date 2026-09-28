@@ -1,0 +1,20 @@
+REVIEW-2 FIX — DOMAIN VERIFICATION
+
+Problem fixed:
+The previous UI could label a syntactically valid but nonexistent hostname as "Potentially Legitimate" because the ML model only classified URL text patterns.
+
+Fix:
+1. Added DNS hostname resolution using Python's socket.getaddrinfo().
+2. A hostname that does not resolve is now shown as:
+   "Unverified / Domain Not Resolving"
+3. DNS verification failure caused by the current network is shown as:
+   "Unable to Verify Domain"
+4. Resolving domains retain the ML classification as an additional signal.
+5. The UI now calls the classifier output "Model Score" rather than implying calibrated confidence.
+6. The application does not fetch arbitrary submitted URLs, avoiding an SSRF risk.
+7. Added automated tests for resolving and non-resolving domain paths.
+
+Example from the reported issue:
+https://googlgijyughke.com
+
+If DNS reports that this hostname does not resolve, PhishGuard AI will no longer display it as "Potentially Legitimate".
