@@ -1,12 +1,26 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from urllib.parse import urlparse
 from datetime import datetime, timezone
 from pathlib import Path
-import sqlite3, pickle, re, math, socket
+import sqlite3, pickle, re, socket
 
 BASE = Path(__file__).resolve().parent
 app = Flask(__name__)
-app.secret_key = "phishguard-academic-demo-secret"
+
+# Secret key — set FLASK_SECRET in the environment for any shared/deployed instance.
+# The fallback value is only acceptable for local development.
+_secret = os.environ.get("FLASK_SECRET", "")
+if not _secret:
+    import warnings
+    warnings.warn(
+        "FLASK_SECRET environment variable is not set. "
+        "Using an insecure development default. "
+        "Set FLASK_SECRET to a strong random value before deploying.",
+        stacklevel=1,
+    )
+    _secret = "phishguard-dev-only-insecure-default"
+app.secret_key = _secret
 
 DB = BASE / "scan_history.db"
 MODEL = BASE.parent / "models" / "final_random_forest.pkl"
@@ -14,20 +28,29 @@ VECTORIZER = BASE.parent / "models" / "final_tfidf_vectorizer.pkl"
 DEMO_MODEL = BASE / "model.pkl"
 DEMO_VECTORIZER = BASE / "vectorizer.pkl"
 
+import logging as _logging
+_log = _logging.getLogger(__name__)
+
 try:
     with open(MODEL, "rb") as f:
         model = pickle.load(f)
     with open(VECTORIZER, "rb") as f:
         vectorizer = pickle.load(f)
+    _log.info("Loaded production model from %s", MODEL)
 except Exception:
     try:
         with open(DEMO_MODEL, "rb") as f:
             model = pickle.load(f)
         with open(DEMO_VECTORIZER, "rb") as f:
             vectorizer = pickle.load(f)
+        _log.info("Production model not found; loaded demo model from %s", DEMO_MODEL)
     except Exception:
         model = None
         vectorizer = None
+        _log.warning(
+            "No model artefacts found. Predictions will use the heuristic fallback. "
+            "Run train_model.py to generate model.pkl and vectorizer.pkl."
+        )
 
 RECOMMENDATIONS = [
     "Do not enter passwords, OTPs or payment details on an unverified page.",
@@ -265,4 +288,7 @@ def about():
 
 if __name__ == "__main__":
     init_db()
-    app.run(debug=True, host="127.0.0.1", port=5000)
+    # Enable debug mode only when FLASK_DEBUG=1 is explicitly set.
+    # Never run with debug=True in a shared or deployed environment.
+    _debug = os.environ.get("FLASK_DEBUG", "0") == "1"
+    app.run(debug=_debug, host="127.0.0.1", port=5000)
