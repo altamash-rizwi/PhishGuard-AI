@@ -22,9 +22,9 @@
 <main class="container">
 <section class="page-heading"><span class="eyebrow">LIVE PROTOTYPE INTERFACE</span><h1>Secure Website Scanner</h1><p>Enter a URL for preliminary analysis. Never enter passwords, OTPs or payment details.</p></section>
 <section class="scanner-panel"><form action="/scan" method="post" class="scan-form"><label for="url">Website URL</label>
-<input id="url" name="url" type="url" placeholder="https://example.com" required autocomplete="off">
+<input id="url" name="url" type="text" placeholder="https://example.com or example.com" required autocomplete="off" spellcheck="false">
 <button class="button primary" type="submit">Analyze URL</button></form>
-<div class="privacy-note"><strong>Safety reminder:</strong> Analyze a URL without manually opening a suspicious destination.</div></section>
+<div class="privacy-note"><strong>Safety reminder:</strong> Enter a full URL or bare domain (e.g. <code>example.com</code>). Do not open suspicious links directly.</div></section>
 <section id="scanner-indicators" class="content-section">
 <div class="section-heading">
 <h2>What the scanner examines</h2>

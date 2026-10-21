@@ -66,19 +66,21 @@ def db():
 
 def init_db():
     con = db()
-    con.execute("""
-        CREATE TABLE IF NOT EXISTS scans (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            created_at TEXT NOT NULL,
-            url TEXT NOT NULL,
-            label TEXT NOT NULL,
-            confidence REAL NOT NULL,
-            threat TEXT NOT NULL,
-            domain_age TEXT NOT NULL
-        )
-    """)
-    con.commit()
-    con.close()
+    try:
+        con.execute("""
+            CREATE TABLE IF NOT EXISTS scans (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                created_at TEXT NOT NULL,
+                url TEXT NOT NULL,
+                label TEXT NOT NULL,
+                confidence REAL NOT NULL,
+                threat TEXT NOT NULL,
+                domain_age TEXT NOT NULL
+            )
+        """)
+        con.commit()
+    finally:
+        con.close()
 
 def normalize_url(value):
     value = (value or "").strip()
@@ -243,13 +245,15 @@ def scan():
         url = normalize_url(request.form.get("url"))
         result = predict(url)
         con = db()
-        con.execute(
-            "INSERT INTO scans(created_at,url,label,confidence,threat,domain_age) VALUES (?,?,?,?,?,?)",
-            (datetime.now().isoformat(timespec="seconds"), result["url"], result["label"],
-             result["confidence"], result["threat"], result["domain_age"])
-        )
-        con.commit()
-        con.close()
+        try:
+            con.execute(
+                "INSERT INTO scans(created_at,url,label,confidence,threat,domain_age) VALUES (?,?,?,?,?,?)",
+                (datetime.now().isoformat(timespec="seconds"), result["url"], result["label"],
+                 result["confidence"], result["threat"], result["domain_age"])
+            )
+            con.commit()
+        finally:
+            con.close()
         return render_template("scan_result.html", result=result)
     except ValueError as e:
         flash(str(e))
@@ -262,8 +266,10 @@ def scan_result():
 @app.route("/history")
 def history():
     con = db()
-    rows = con.execute("SELECT * FROM scans ORDER BY id DESC LIMIT 200").fetchall()
-    con.close()
+    try:
+        rows = con.execute("SELECT * FROM scans ORDER BY id DESC LIMIT 200").fetchall()
+    finally:
+        con.close()
     return render_template("history.html", scans=rows)
 
 @app.route("/results")
