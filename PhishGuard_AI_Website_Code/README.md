@@ -52,8 +52,12 @@ must be retained.
 
 The Blueprint prompts you to provide the initial admin email and a unique
 password through Render's environment settings; use a password of at least 12
-characters and keep it out of source control. If you rename the service or add a
-custom domain, update `TRUSTED_HOSTS` to include the actual hostnames.
+characters and keep it out of source control. `TRUSTED_HOSTS` must exactly
+match the service's assigned Render hostname (`phishguard-ai-7pzp.onrender.com`
+for the current deployment) and any custom domains. If Render assigns a
+different hostname or you add a custom domain, update the environment variable
+in the Render dashboard; otherwise Flask will reject requests, including health
+checks.
 
 For production use, change to a paid service plan with a persistent disk (or
 migrate to a managed database), then configure encrypted off-host backups,

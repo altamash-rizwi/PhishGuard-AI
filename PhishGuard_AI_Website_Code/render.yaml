@@ -15,7 +15,7 @@ services:
       - key: FLASK_SECRET
         generateValue: true
       - key: TRUSTED_HOSTS
-        value: phishguard-ai.onrender.com
+        value: phishguard-ai-7pzp.onrender.com
       - key: DB_PATH
         value: /tmp/scan_history.db
       - key: PHISHGUARD_ADMIN_EMAIL
