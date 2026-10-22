@@ -6,6 +6,9 @@ PHISHGUARD AI - FINAL RUN GUIDE
 3. Install dependencies:
    python -m pip install -r requirements.txt
 
+   Optional regression tests:
+   python -m pytest -q
+
 4. Download the official large dataset:
    python scripts/download_datasets.py
 
@@ -20,6 +23,14 @@ PHISHGUARD AI - FINAL RUN GUIDE
 
 7. Open:
    http://127.0.0.1:5000
+
+The command above starts the local development server only. For production,
+review render.yaml and the deployment and operations instructions in README.md
+and docs/OPERATIONS.md. Do not expose the Flask development server publicly.
+
+This command starts the local development server only. For a production
+deployment, follow the Waitress, trusted-host, secret, and HTTPS reverse-proxy
+instructions in README.md and docs/OPERATIONS.md.
 
 IMPORTANT:
 - Do not claim 100% accuracy.

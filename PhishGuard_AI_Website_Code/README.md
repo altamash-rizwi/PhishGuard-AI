@@ -1,180 +1,104 @@
-# PhishGuard AI
+# PhishGuard AI — Complete Product MVP
 
-**AI-Based Phishing Detection & Secure Website Analysis System**  
-Academic prototype · Flask · scikit-learn · SQLite
+A cybersecurity web application prototype for explainable URL analysis, phishing-awareness learning, quizzes, user progress, report intake and analyst triage.
 
----
+## Quick start (Windows PowerShell)
 
-## Overview
-
-PhishGuard AI is a Python/Flask web application that classifies submitted URLs as
-*Potentially Phishing* or *Potentially Legitimate* using a TF-IDF + Random Forest
-machine-learning pipeline, combined with a live DNS resolution check that confirms
-whether the domain actually exists before presenting a result.
-
-This is an academic prototype built for a Problem-Based Learning (PBL) project.
-**It does not guarantee that any URL is safe or malicious.**
-
----
-
-## Project structure
-
-```
-PhishGuard_AI_Website_Code/
-├── app/
-│   ├── app.py                  # Flask application (routes, model loading, DNS check)
-│   ├── train_model.py          # Training script (TF-IDF + Random Forest)
-│   ├── evaluate_model.py       # Evaluation script (dedup CV, LODO, scheme-swap probes)
-│   ├── model.pkl               # Trained Random Forest (sklearn 1.9.0)
-│   ├── vectorizer.pkl          # Fitted TF-IDF vectorizer (sklearn 1.9.0)
-│   ├── requirements.txt        # Pinned Python dependencies
-│   ├── scan_history.db         # SQLite scan history (created on first run)
-│   ├── templates/
-│   │   ├── index.html
-│   │   ├── scanner.html
-│   │   ├── scan_result.html
-│   │   ├── history.html
-│   │   ├── results.html
-│   │   ├── security.html
-│   │   ├── education.html
-│   │   ├── faq.html
-│   │   └── about.html
-│   └── tests/
-│       ├── conftest.py         # pytest fixtures (FLASK_SECRET, temp DB)
-│       ├── test_phase1.py      # 36 tests: startup, normalisation, DNS, model
-│       ├── test_phase2.py      # 25 tests: dataset integrity, scheme-swap probes
-│       └── test_phase3.py      # 34 tests: templates, bare-domain input, history
-├── models/
-│   ├── final_random_forest.pkl    # Production model copy (sklearn 1.9.0)
-│   └── final_tfidf_vectorizer.pkl # Production vectorizer copy (sklearn 1.9.0)
-├── data/
-│   └── phishing_urls.csv          # 400-row training dataset
-├── tests/
-│   └── test_app.py                # Original 5-test smoke suite
-└── docs/
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+py -m pip install -r requirements.txt
+$env:APP_ENV = "development"
+$env:FLASK_SECRET = (py -c "import secrets; print(secrets.token_hex(32))")
+py app/app.py
 ```
 
----
+Open `http://127.0.0.1:5000`.
+If no secret is supplied in development, a random temporary key is generated;
+existing sessions will expire when the process restarts.
 
-## Quick start
+## Production deployment (starting point only)
 
-```bash
-# 1. Create and activate a virtual environment (recommended)
-py -m venv venv
-venv\Scripts\activate          # Windows
-# source venv/bin/activate     # Linux / macOS
+This is not a one-command public deployment. Put the app behind a maintained
+HTTPS reverse proxy, keep the Waitress listener bound to localhost, and provide
+production secrets through the hosting platform's secret manager:
 
-# 2. Install dependencies
-pip install -r app/requirements.txt
-
-# 3. Set the Flask secret key (required in production)
-set FLASK_SECRET=your-secret-here       # Windows cmd
-# export FLASK_SECRET=your-secret-here  # Linux / macOS
-
-# 4. Run the application
-cd app
-py app.py
-# open http://127.0.0.1:5000
+```powershell
+$env:APP_ENV = "production"
+$env:FLASK_DEBUG = "0"
+$env:FLASK_SECRET = (py -c "import secrets; print(secrets.token_hex(32))")
+$env:TRUSTED_HOSTS = "phishguard.example.com"
+waitress-serve --listen=127.0.0.1:5000 wsgi:app
 ```
 
-If `FLASK_SECRET` is not set, the application starts with a random dev key and
-prints a `UserWarning`. This is intentional — never skip this warning in production.
+The production app refuses to start without a 32-byte `FLASK_SECRET` and
+`TRUSTED_HOSTS`, forces secure session cookies, and does not use Flask's
+development server. Configure TLS, HTTP-to-HTTPS redirects, HSTS, access
+controls, log rotation, and host-level firewall rules at the reverse proxy and
+operating-system layers. Do not use the local development setup scripts in
+production.
 
----
+### Render
 
-## Running the tests
+The included `render.yaml` Blueprint prepares the `phishguard-ai` web service
+with Waitress, Render's assigned port, `/healthz`, a generated application
+secret, the Render hostname allowlist, and a persistent 1 GB disk mounted at
+`/var/data`. The app and maintenance scripts use `DB_PATH` so SQLite and
+maintenance tasks point to the configured database. Review Render plan and
+persistent-disk costs before applying the Blueprint. If you rename the service
+or add a custom domain, update `TRUSTED_HOSTS` to include the actual hostnames.
+The Blueprint prompts you to provide the initial admin email and a unique
+password through Render's environment settings; use a password of at least 12
+characters and keep it out of source control.
 
-```bash
-# From the app/ directory
-py -m pytest tests/ -v
+The persistent disk protects SQLite across app deploys, but it is not a backup.
+The Blueprint does not schedule encrypted off-host backups, retention jobs, or
+alerting. Configure these independently and test a restore before storing real
+user reports.
 
-# Treat all UserWarnings and InconsistentVersionWarnings as errors
-py -m pytest tests/ -v -W error::UserWarning -W error::sklearn.exceptions.InconsistentVersionWarning
+For a local admin account, set both variables before starting the app (use your own credentials):
+
+```powershell
+$env:PHISHGUARD_ADMIN_EMAIL = "your-admin-email@example.com"
+$env:PHISHGUARD_ADMIN_PASSWORD = "a-unique-password-at-least-12-chars"
+py app/app.py
 ```
 
-All 95 tests pass with zero warnings on Python 3.14 / scikit-learn 1.9.0.
+On startup, the app creates the account or promotes the matching account to the `admin` role. Do not use the example credentials from `.env.example` as real credentials.
 
----
+## Main user journey
 
-## How it works
+Home → Scan URL → Review rule reasons and ML signal → Learn red flags → Try phishing-email simulation → Take quiz → View progress → Report a suspicious URL.
 
-### URL normalisation
-Raw input (bare domain, `http://`, or `https://`) is normalised to a full URL.
-Only `http://` and `https://` schemes are accepted; anything else is rejected with
-an HTTP 302 redirect.
+## Operations
 
-### DNS verification
-`socket.getaddrinfo()` is called on the extracted hostname.  
-- Domain resolves → ML classification is shown as an additional signal.  
-- Domain does not resolve → result is labelled **Unverified / Domain Not Resolving**.  
-- DNS lookup errors → result is labelled **Unable to Verify Domain**.
+- `/admin` — analyst/admin report queue and audit log
+- `/api/v1/...` — versioned JSON endpoints; see `docs/API.md`
+- `docs/PRODUCT_SCOPE.md` — included features and production gaps
+- `docs/ARCHITECTURE.md` — architecture overview
+- `docs/FINAL_CHECKLIST.md` — project review checklist
 
-The application **never fetches the submitted URL**, eliminating the SSRF risk that
-would arise from blindly requesting user-supplied addresses.
+## Security and model limitations
 
-### ML classification
-A character-level TF-IDF vectorizer converts the URL string into a feature vector.
-A Random Forest classifier (100 trees) predicts label 0 (legitimate) or 1 (phishing).
-The raw class-probability score is shown as **Model Score** — not a calibrated
-confidence value.
+The heuristic score is an indicator summary, not a calibrated probability. ML confidence is uncalibrated and the demo model has known data-quality limitations. A low score does not prove a site is safe. The server does not open submitted URLs. Reports are saved locally and are not sent to an external organization. Do not deploy publicly without completing the hardening checklist in `docs/PRODUCT_SCOPE.md`.
 
-### Scan history
-Every completed scan is written to `scan_history.db` (SQLite). The `/history` route
-reads and displays all records in reverse-chronological order.
+## Tests
 
----
+```powershell
+py -m pytest -q
+```
 
-## Model limitations (academic prototype)
+Dependency versions are pinned in `requirements.txt`; the scikit-learn pin
+matches the bundled model artifacts. Run the suite after installing those exact
+versions.
 
-The bundled training dataset (`data/phishing_urls.csv`) contains **400 rows with
-380 exact duplicates** (20 unique URLs). Cross-validated accuracy appears at 1.0 due
-to duplicate leakage across train/test folds. A scheme-swap analysis further shows
-the model has learned that `http://` correlates with phishing and `https://` with
-legitimate — a scheme proxy rather than genuine URL-pattern recognition.
+## Backups and retention
 
-These limitations are documented in `evaluate_model.py` and `docs/`. Do not report
-the bundled model's accuracy as final performance in any academic submission without
-re-training on a larger, deduplicated dataset.
-
----
-
-## Environment variables
-
-| Variable | Required | Default | Effect |
-|---|---|---|---|
-| `FLASK_SECRET` | Recommended | random (dev fallback) | Flask session secret key |
-| `FLASK_DEBUG` | No | not set | Set to `1` to enable Flask debug mode |
-
----
-
-## Dependencies
-
-| Package | Version |
-|---|---|
-| Flask | 3.1.1 |
-| scikit-learn | 1.9.0 |
-| pandas | 2.2.3 |
-| numpy | 2.2.6 |
-| python-whois | 0.9.5 |
-
-See `app/requirements.txt` for exact pinned versions.
-
----
-
-## Git history
-
-| Commit | Description |
-|---|---|
-| `242fa62` | Original submission (tagged `phase1-baseline`) |
-| `c801e77` | Phase 1: secret key env var, debug gate, requirements.txt, 36 tests |
-| `445de14` | Phase 2: dataset analysis, evaluate_model.py, 25 tests |
-| `625c641` | Phase 3: template cleanup, bare-domain input, SQLite safety, 34 tests |
-| `41e483b` | Final fix: regenerate ../models/ pkl files to sklearn 1.9.0 |
-
----
-
-## Disclaimer
-
-This application is an academic prototype. Neither the DNS check nor the ML
-classification proves that a website is safe. Always exercise caution and use
-professional security tooling before trusting any URL classifier.
+Create a consistent SQLite backup with
+`py scripts\backup_database.py`. Review the retention dry run with
+`py scripts\retention_cleanup.py`; after taking and verifying a backup, run
+`py scripts\retention_cleanup.py --apply` to delete expired records. Schedule
+these tasks with the host's task scheduler, restrict backup access, encrypt
+backups at rest, and test restore procedures before accepting real user data.
+The default policy retains scans, reports, learning progress and quiz records
+for 90 days and audit/review history for 365 days.

@@ -1,301 +1,357 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home | PhishGuard AI</title>
-<link rel="stylesheet" href="{{ url_for("static", filename="css/style.css") }}">
-</head>
-<body>
-<header class="site-header"><div class="container nav-container">
-<a class="brand" href="{{ url_for("home") }}">PhishGuard AI</a>
-<nav class="main-nav">
-<a class="nav-link active" href="{{ url_for("home") }}">Home</a>
-<a class="nav-link" href="{{ url_for("scanner") }}">Scanner</a>
-<a class="nav-link" href="{{ url_for("results_info") }}">Results</a>
-<a class="nav-link" href="{{ url_for("history") }}">History</a>
-<a class="nav-link" href="{{ url_for("security") }}">Security</a>
-<a class="nav-link" href="{{ url_for("education") }}">Education</a>
-<a class="nav-link" href="{{ url_for("faq") }}">FAQ</a>
-<a class="nav-link" href="{{ url_for("about") }}">About</a>
-</nav></div></header>
-<main class="container">
-<section class="hero"><span class="eyebrow">AI-ASSISTED CYBERSECURITY PROTOTYPE</span>
-<h1>AI-Based Phishing Detection &amp; Secure Website Analysis</h1>
-<p>Check a suspicious URL before interacting with it. PhishGuard AI analyzes URL and security indicators and provides a preliminary threat assessment.</p>
-<a class="button primary" href="{{ url_for("scanner") }}">Check a URL</a></section>
-<section class="stats-grid">
-<article class="stat-card"><span>01</span><h2>URL Analysis</h2><p>Analyze URL indicators.</p></article>
-<article class="stat-card"><span>02</span><h2>ML Classification</h2><p>TF-IDF + Random Forest prototype.</p></article>
-<article class="stat-card"><span>03</span><h2>Domain Context</h2><p>Available domain-age information.</p></article>
-<article class="stat-card"><span>04</span><h2>Safety Guidance</h2><p>User-oriented recommendations.</p></article>
-</section>
-<section id="phishing" class="content-section">
-<div class="section-heading">
-<h2>Why phishing matters</h2>
-<p>Phishing can lead to credential theft, payment fraud and loss of personal information.</p>
-</div>
-<div class="card-grid">
-<article class="info-card" id="phishing-1">
-<span class="card-number">0001</span>
-<h3>Credential phishing</h3>
-<p>A fake login page attempts to collect usernames and passwords.</p>
-<p class="card-note">Verify the domain.</p>
-</article>
-<article class="info-card" id="phishing-2">
-<span class="card-number">0002</span>
-<h3>Banking phishing</h3>
-<p>A fraudulent page imitates a bank or payment provider.</p>
-<p class="card-note">Use the official banking application.</p>
-</article>
-<article class="info-card" id="phishing-3">
-<span class="card-number">0003</span>
-<h3>Shopping phishing</h3>
-<p>Fake stores or offers attempt to collect payment information.</p>
-<p class="card-note">Check the merchant independently.</p>
-</article>
-<article class="info-card" id="phishing-4">
-<span class="card-number">0004</span>
-<h3>Account verification scam</h3>
-<p>A message claims an account must be verified immediately.</p>
-<p class="card-note">Navigate to the service independently.</p>
-</article>
-<article class="info-card" id="phishing-5">
-<span class="card-number">0005</span>
-<h3>Delivery scam</h3>
-<p>A fake parcel notification asks for payment or details.</p>
-<p class="card-note">Check delivery status through the official courier.</p>
-</article>
-<article class="info-card" id="phishing-6">
-<span class="card-number">0006</span>
-<h3>Prize scam</h3>
-<p>A message claims that the user won a reward.</p>
-<p class="card-note">Unexpected prizes deserve caution.</p>
-</article>
-<article class="info-card" id="phishing-7">
-<span class="card-number">0007</span>
-<h3>Job phishing</h3>
-<p>Fake recruiters request documents, fees or credentials.</p>
-<p class="card-note">Verify the organization.</p>
-</article>
-<article class="info-card" id="phishing-8">
-<span class="card-number">0008</span>
-<h3>Social-media phishing</h3>
-<p>Attackers imitate social platforms or account warnings.</p>
-<p class="card-note">Open the platform directly.</p>
-</article>
-<article class="info-card" id="phishing-9">
-<span class="card-number">0009</span>
-<h3>Email phishing</h3>
-<p>A deceptive email uses urgency or authority.</p>
-<p class="card-note">Inspect sender and destination.</p>
-</article>
-<article class="info-card" id="phishing-10">
-<span class="card-number">0010</span>
-<h3>Smishing</h3>
-<p>Phishing is delivered through SMS or messaging apps.</p>
-<p class="card-note">Treat unexpected links as untrusted.</p>
-</article>
-<article class="info-card" id="phishing-11">
-<span class="card-number">0011</span>
-<h3>Spear phishing</h3>
-<p>A targeted attack uses personalized information.</p>
-<p class="card-note">Verify unusual requests separately.</p>
-</article>
-<article class="info-card" id="phishing-12">
-<span class="card-number">0012</span>
-<h3>QR phishing</h3>
-<p>A QR code redirects to a fraudulent destination.</p>
-<p class="card-note">Preview the destination first.</p>
-</article>
-</div>
-</section>
-<section id="indicators" class="content-section">
-<div class="section-heading">
-<h2>Security indicators</h2>
-<p>No single indicator is a final verdict.</p>
-</div>
-<div class="card-grid">
-<article class="info-card" id="indicators-1">
-<span class="card-number">0001</span>
-<h3>URL Length</h3>
-<p>Very long URLs can sometimes hide suspicious paths or parameters.</p>
-<p class="card-note">Length alone is not proof of phishing.</p>
-</article>
-<article class="info-card" id="indicators-2">
-<span class="card-number">0002</span>
-<h3>HTTPS</h3>
-<p>HTTPS encrypts communication between browser and server.</p>
-<p class="card-note">HTTPS does not prove that a site is trustworthy.</p>
-</article>
-<article class="info-card" id="indicators-3">
-<span class="card-number">0003</span>
-<h3>IP Address</h3>
-<p>A raw IP address can be unusual for a public login page.</p>
-<p class="card-note">Treat unexpected IP-based links cautiously.</p>
-</article>
-<article class="info-card" id="indicators-4">
-<span class="card-number">0004</span>
-<h3>@ Symbol</h3>
-<p>An @ symbol can contribute to misleading URL structures.</p>
-<p class="card-note">Inspect the actual hostname.</p>
-</article>
-<article class="info-card" id="indicators-5">
-<span class="card-number">0005</span>
-<h3>Hyphen Count</h3>
-<p>Hyphenated domains can sometimes imitate recognizable names.</p>
-<p class="card-note">Consider this with other indicators.</p>
-</article>
-<article class="info-card" id="indicators-6">
-<span class="card-number">0006</span>
-<h3>Dot Count</h3>
-<p>Multiple dots can make a URL difficult to interpret.</p>
-<p class="card-note">Identify the registered domain.</p>
-</article>
-<article class="info-card" id="indicators-7">
-<span class="card-number">0007</span>
-<h3>Subdomains</h3>
-<p>Deceptive subdomains can contain brand-like words.</p>
-<p class="card-note">Read the hostname carefully.</p>
-</article>
-<article class="info-card" id="indicators-8">
-<span class="card-number">0008</span>
-<h3>Suspicious Words</h3>
-<p>Words such as login, verify, reward or update may appear in deceptive links.</p>
-<p class="card-note">Words are contextual signals.</p>
-</article>
-<article class="info-card" id="indicators-9">
-<span class="card-number">0009</span>
-<h3>Query Length</h3>
-<p>Long query strings can contain many parameters.</p>
-<p class="card-note">Inspect unexpected parameters.</p>
-</article>
-<article class="info-card" id="indicators-10">
-<span class="card-number">0010</span>
-<h3>Path Length</h3>
-<p>Long paths can hide the meaningful destination.</p>
-<p class="card-note">Review the complete URL.</p>
-</article>
-<article class="info-card" id="indicators-11">
-<span class="card-number">0011</span>
-<h3>Domain Age</h3>
-<p>A newly registered domain can be an additional caution signal.</p>
-<p class="card-note">Domain age is not a verdict.</p>
-</article>
-<article class="info-card" id="indicators-12">
-<span class="card-number">0012</span>
-<h3>Redirects</h3>
-<p>Unexpected redirects can hide the final destination.</p>
-<p class="card-note">Verify the final destination.</p>
-</article>
-<article class="info-card" id="indicators-13">
-<span class="card-number">0013</span>
-<h3>Punycode</h3>
-<p>Internationalized domains can create visually confusing names.</p>
-<p class="card-note">Inspect normalized hostnames.</p>
-</article>
-<article class="info-card" id="indicators-14">
-<span class="card-number">0014</span>
-<h3>Port Number</h3>
-<p>Non-standard ports can be legitimate but deserve context.</p>
-<p class="card-note">A port alone is not proof.</p>
-</article>
-<article class="info-card" id="indicators-15">
-<span class="card-number">0015</span>
-<h3>Fragment</h3>
-<p>Fragments can contain page state or navigation.</p>
-<p class="card-note">Treat them as one part of analysis.</p>
-</article>
-</div>
-</section>
-<section id="checklist" class="content-section">
-<div class="section-heading">
-<h2>Safer browsing checklist</h2>
-<p>Use these habits before clicking unexpected links.</p>
-</div>
-<div class="card-grid">
-<article class="info-card" id="checklist-1">
-<span class="card-number">0001</span>
-<h3>Practice 1</h3>
-<p>Check the complete domain before entering sensitive information.</p>
-</article>
-<article class="info-card" id="checklist-2">
-<span class="card-number">0002</span>
-<h3>Practice 2</h3>
-<p>Do not assume HTTPS means a website is legitimate.</p>
-</article>
-<article class="info-card" id="checklist-3">
-<span class="card-number">0003</span>
-<h3>Practice 3</h3>
-<p>Avoid unexpected links in messages and emails.</p>
-</article>
-<article class="info-card" id="checklist-4">
-<span class="card-number">0004</span>
-<h3>Practice 4</h3>
-<p>Use official applications for sensitive services.</p>
-</article>
-<article class="info-card" id="checklist-5">
-<span class="card-number">0005</span>
-<h3>Practice 5</h3>
-<p>Keep browsers and operating systems updated.</p>
-</article>
-<article class="info-card" id="checklist-6">
-<span class="card-number">0006</span>
-<h3>Practice 6</h3>
-<p>Use unique passwords and enable multi-factor authentication.</p>
-</article>
-<article class="info-card" id="checklist-7">
-<span class="card-number">0007</span>
-<h3>Practice 7</h3>
-<p>Be cautious of urgent requests that create fear or pressure.</p>
-</article>
-<article class="info-card" id="checklist-8">
-<span class="card-number">0008</span>
-<h3>Practice 8</h3>
-<p>Verify unusual payment requests independently.</p>
-</article>
-<article class="info-card" id="checklist-9">
-<span class="card-number">0009</span>
-<h3>Practice 9</h3>
-<p>Do not install software from unsolicited links.</p>
-</article>
-<article class="info-card" id="checklist-10">
-<span class="card-number">0010</span>
-<h3>Practice 10</h3>
-<p>Report suspicious messages through official channels.</p>
-</article>
-<article class="info-card" id="checklist-11">
-<span class="card-number">0011</span>
-<h3>Practice 11</h3>
-<p>If you clicked a suspicious link, stop before entering information.</p>
-</article>
-<article class="info-card" id="checklist-12">
-<span class="card-number">0012</span>
-<h3>Practice 12</h3>
-<p>If credentials were exposed, change the password through the official service.</p>
-</article>
-<article class="info-card" id="checklist-13">
-<span class="card-number">0013</span>
-<h3>Practice 13</h3>
-<p>For financial exposure, contact the institution through an official channel.</p>
-</article>
-<article class="info-card" id="checklist-14">
-<span class="card-number">0014</span>
-<h3>Practice 14</h3>
-<p>Monitor important accounts for unexpected activity.</p>
-</article>
-<article class="info-card" id="checklist-15">
-<span class="card-number">0015</span>
-<h3>Practice 15</h3>
-<p>Teach family and colleagues how to inspect URLs.</p>
-</article>
-</div>
-</section>
-</main>
-<footer class="site-footer"><div class="container footer-grid">
-<section><h2>PhishGuard AI</h2><p>AI-assisted URL analysis for safer browsing decisions.</p></section>
-<section><h2>Safety Notice</h2><p>Automated analysis is an additional signal, not a guarantee.</p></section>
-<section><h2>Project</h2><p>AI-Based Phishing Detection and Secure Website Analysis System.</p></section>
-</div></footer>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PhishGuard AI | URL Intelligence Console</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css', v='4') }}"
+    />
+  </head>
+  <body class="console-page">
+    <header class="console-topbar">
+      <a class="brand" href="{{ url_for('home') }}"
+        ><span class="brand-mark">PG</span
+        ><span
+          >PhishGuard <b>AI</b><small>URL INTELLIGENCE CONSOLE</small></span
+        ></a
+      >
+      <nav class="console-topnav" aria-label="Main navigation">
+        <a class="console-toplink active" href="{{ url_for('home') }}"
+          >⌂ <span>Overview</span></a
+        >
+        <a class="console-toplink" href="{{ url_for('scanner') }}"
+          >⌕ <span>Scanner</span></a
+        >
+        <a class="console-toplink" href="{{ url_for('history') }}"
+          >◷ <span>Scan History</span></a
+        >
+        <a class="console-toplink" href="{{ url_for('security') }}"
+          >⛨ <span>Security</span></a
+        >
+        <a class="console-toplink" href="{{ url_for('education') }}"
+          >▤ <span>Learn</span></a
+        >
+        <a class="nav-link" href="{{ url_for('email_simulation') }}"
+          >Email simulation</a
+        ><a class="nav-link" href="{{ url_for('progress') }}">Progress</a>{% if
+        current_user %}<a
+          class="nav-link"
+          href="{{ url_for('admin_dashboard') if current_user['role'] in ['admin','analyst'] else url_for('progress') }}"
+          >{{ 'Admin' if current_user['role'] in ['admin','analyst'] else 'My
+          account' }}</a
+        >
+        <form
+          method="post"
+          action="{{ url_for('logout') }}"
+          style="display: inline"
+        >
+          <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token }}"
+          /><button class="nav-link" type="submit">Sign out</button>
+        </form>
+        {% else %}<a class="nav-link" href="{{ url_for('login') }}">Sign in</a
+        ><a class="nav-link" href="{{ url_for('register') }}">Register</a>{%
+        endif %}
+      </nav>
+      <a
+        class="console-avatar"
+        href="{{ url_for('about') }}"
+        aria-label="About PhishGuard AI"
+        >PG</a
+      >
+    </header>
+    <div class="console-layout">
+      <aside class="console-sidebar">
+        <span class="sidebar-label">WORKSPACE</span>
+        <a class="side-link active" href="{{ url_for('home') }}"
+          ><span>⌂</span> Overview</a
+        >
+        <a class="side-link" href="{{ url_for('scanner') }}"
+          ><span>⌕</span> URL Scanner</a
+        >
+        <a class="side-link" href="{{ url_for('history') }}"
+          ><span>◷</span> Scan History</a
+        >
+        <span class="sidebar-label sidebar-spaced">RESOURCES</span>
+        <a class="side-link" href="{{ url_for('security') }}"
+          ><span>⛨</span> Security Tools</a
+        >
+        <a class="side-link" href="{{ url_for('education') }}"
+          ><span>▤</span> Learn & Resources</a
+        >
+        <div class="sidebar-safety">
+          <div class="safety-orb">⛨</div>
+          <strong>Stay safe online</strong>
+          <p>Pause and inspect suspicious links before you click.</p>
+        </div>
+        <div class="sidebar-version">
+          <span class="live-dot"></span> Local analysis engine<br /><small
+            >Educational prototype</small
+          >
+        </div>
+      </aside>
+      <main class="console-main">
+        <section class="console-hero">
+          <div class="console-hero-copy">
+            <span class="eyebrow"
+              ><i class="status-dot"></i> CYBERSECURITY ANALYSIS PLATFORM</span
+            >
+            <h1>URL Intelligence <em>Console</em></h1>
+            <p>
+              Inspect suspicious links, review explainable URL indicators, and
+              explore domain context before deciding what to trust.
+            </p>
+            <form
+              action="{{ url_for('scan') }}"
+              method="post"
+              class="console-scan-form"
+            >
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+              <label class="sr-only" for="console-url">URL to analyze</label>
+              <span class="console-input-icon">↗</span>
+              <input
+                id="console-url"
+                name="url"
+                type="text"
+                placeholder="Enter a URL (e.g. https://example.com)"
+                maxlength="2048"
+                required
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button class="button primary" type="submit">
+                ⌕ &nbsp; Analyze URL <span>→</span>
+              </button>
+            </form>
+            <div class="example-row">
+              <span>Try an example:</span
+              ><button
+                type="button"
+                class="example-chip"
+                data-url="https://example.com"
+              >
+                example.com</button
+              ><button
+                type="button"
+                class="example-chip"
+                data-url="http://bit.ly/3xyz"
+              >
+                URL shortener pattern
+              </button>
+            </div>
+            <div class="console-disclaimer">
+              <span>●</span> Results are indicators, not a safety guarantee. The
+              destination page is not opened.
+            </div>
+          </div>
+          <div class="console-hero-art" aria-hidden="true">
+            <div class="art-grid"></div>
+            <div class="art-orbit art-orbit-a"></div>
+            <div class="art-orbit art-orbit-b"></div>
+            <div class="art-shield"><div class="art-shield-inner">✓</div></div>
+            <div class="art-float art-float-a">
+              <span class="live-dot"></span> URL parsing <strong>ACTIVE</strong>
+            </div>
+            <div class="art-float art-float-b">
+              <span class="live-dot"></span> Explainable checks
+              <strong>ON</strong>
+            </div>
+            <div class="art-mini-chart">
+              <span></span><span></span><span></span><span></span><span></span
+              ><span></span><span></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="console-metrics" aria-label="Live local statistics">
+          <a class="console-metric console-metric-link metric-cyan" href="{{ url_for('history') }}">
+            <div class="console-metric-icon">▤</div>
+            <div>
+              <span>Total scans</span><strong>{{ total_scans }}</strong
+              ><small>Stored in this browser's local app database</small>
+            </div>
+            <div class="metric-spark">
+              <i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </a>
+          <a class="console-metric console-metric-link metric-red" href="{{ url_for('history') }}">
+            <div class="console-metric-icon">⚠</div>
+            <div>
+              <span>High-risk indicators</span
+              ><strong>{{ flagged_scans }}</strong
+              ><small>Stored scans with score 60 or higher</small>
+            </div>
+            <div class="metric-spark">
+              <i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </a>
+          <a class="console-metric console-metric-link metric-blue" href="{{ url_for('scanner') }}">
+            <div class="console-metric-icon">◎</div>
+            <div>
+              <span>Analysis engine</span><strong>URL checks</strong
+              ><small>Transparent heuristic rules</small>
+            </div>
+            <div class="metric-rings">◎</div>
+          </a>
+          <a class="console-metric console-metric-link metric-violet" href="{{ url_for('results_info') }}">
+            <div class="console-metric-icon">◷</div>
+            <div>
+              <span>ML signal</span><strong>{% if ml_available %}Available{% else %}Unavailable{% endif %}</strong
+              ><small>Experimental; uncalibrated and shown separately</small>
+            </div>
+            <div class="metric-rings">◇</div>
+          </a>
+        </section>
+
+        <section class="console-panels">
+          <article class="console-panel recent-panel">
+            <div class="console-panel-head">
+              <div>
+                <span class="panel-kicker">ACTIVITY</span>
+                <h2>Recent scans</h2>
+              </div>
+              <a class="console-view-link" href="{{ url_for('history') }}"
+                >View history →</a
+              >
+            </div>
+            {% if recent_scans %}
+            <div class="console-table-wrap">
+              <table class="console-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>URL</th>
+                    <th>Assessment</th>
+                    <th>Score</th>
+                    <th>Time (UTC)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for scan in recent_scans %}
+                  <tr>
+                    <td>{{ loop.index }}</td>
+                    <td class="url-cell">{{ scan['url'] }}</td>
+                    <td>
+                      <span
+                        class="badge {% if scan['threat'] in ['Higher','High'] %}badge-danger{% elif scan['threat'] == 'Moderate' %}badge-warn{% else %}badge-safe{% endif %}"
+                        >{{ scan['label'] }}</span
+                      >
+                    </td>
+                    <td>
+                      <strong
+                        >{{ scan['risk_score'] if 'risk_score' in scan.keys()
+                        else '—' }}/100</strong
+                      >
+                    </td>
+                    <td>{{ scan['created_at'][:16].replace('T',' ') }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <div class="console-empty">
+              <div class="empty-icon">⌕</div>
+              <strong>No scans yet</strong>
+              <p>
+                Run your first URL analysis to populate this panel with real
+                results.
+              </p>
+              <a class="button primary" href="{{ url_for('scanner') }}"
+                >Start first scan →</a
+              >
+            </div>
+            {% endif %}
+          </article>
+          <article class="console-panel engine-panel">
+            <div class="console-panel-head">
+              <div>
+                <span class="panel-kicker">SYSTEM STATUS</span>
+                <h2>Analysis overview</h2>
+              </div>
+              <span class="status-pill"><i class="status-dot"></i> Ready</span>
+            </div>
+            <div class="engine-status-visual">
+              <div class="engine-ring">
+                <span>URL</span><small>CHECKS</small>
+              </div>
+              <div class="engine-copy">
+                <strong>Layered inspection</strong>
+                <p>Structure · wording · host format · DNS context</p>
+                <span class="experimental-tag">ML signal: experimental</span>
+              </div>
+            </div>
+            <div class="engine-checks">
+              <div>
+                <span class="check-ok">✓</span> URL structure checks
+                <strong>Enabled</strong>
+              </div>
+              <div>
+                <span class="check-ok">✓</span> SQLite scan history
+                <strong>Enabled</strong>
+              </div>
+              <div>
+                <span class="check-info">i</span> Destination page fetch
+                <strong>Disabled</strong>
+              </div>
+            </div>
+            <a
+              class="button secondary console-full-button"
+              href="{{ url_for('scanner') }}"
+              >Open scanner <span>→</span></a
+            >
+          </article>
+          <article class="console-panel warning-panel">
+            <div class="console-panel-head">
+              <div>
+                <span class="panel-kicker">INSPECTION RULES</span>
+                <h2>URL warning signs</h2>
+              </div>
+              <span class="rule-count">9</span>
+            </div>
+            <p class="panel-subcopy">
+              Available checks for each submitted URL. Findings depend on the
+              URL.
+            </p>
+            {% for item in ['HTTPS / HTTP transport','IP address as
+            hostname','User-info / @ symbol','Suspicious wording','URL length
+            and encoding','Punycode hostname','Non-standard port','Known URL
+            shortener','DNS hostname resolution'] %}
+            <div class="rule-row">
+              <span class="rule-check">✓</span><span>{{ item }}</span
+              ><small>Check available</small>
+            </div>
+            {% endfor %}
+            <div class="rule-note">
+              A passing structural check does not prove that a website is
+              legitimate.
+            </div>
+          </article>
+        </section>
+        <section class="console-footnote">
+          <span>ⓘ</span>
+          <div>
+            <strong>Model limitation</strong>
+            <p>
+              The bundled demo model has known dataset duplication and
+              label-leakage issues. Do not interpret model confidence or a low
+              indicator score as a safety guarantee.
+            </p>
+          </div>
+        </section>
+        <footer class="console-footer">
+          <span>PhishGuard AI · PBL-1 prototype</span
+          ><span>Local records only · No destination page fetched</span>
+        </footer>
+      </main>
+    </div>
+    <script
+      src="{{ url_for('static', filename='js/prototype.js', v='1') }}"
+      defer
+    ></script>
+  </body>
 </html>

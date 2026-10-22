@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Analyst Console | PhishGuard AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-container">
+        <a class="brand" href="{{ url_for('home') }}"
+          ><span class="brand-mark">PG</span
+          ><span>PhishGuard <b>AI</b><small>ANALYST CONSOLE</small></span></a
+        >
+        <nav class="main-nav">
+          <a class="nav-link" href="{{ url_for('scanner') }}">Scanner</a
+          ><a class="nav-link" href="{{ url_for('progress') }}">Progress</a
+          ><a class="nav-link active" href="{{ url_for('admin_dashboard') }}">Admin / Triage</a>
+          <form method="post" action="{{ url_for('logout') }}" style="display: inline">
+            <input
+              type="hidden"
+              name="csrf_token"
+              value="{{ csrf_token }}"
+            /><button class="nav-link" type="submit">Sign out</button>
+          </form>
+        </nav>
+      </div>
+    </header>
+    <main class="container page-shell">
+      <section class="page-heading">
+        <span class="eyebrow">OPERATIONS</span>
+        <h1>Analyst triage</h1>
+        <p>
+          Review submitted reports, change statuses and inspect recent audit
+          events.
+        </p>
+      </section>
+      <div class="console-metrics">
+        <div class="console-metric">
+          <div>
+            <span>REGISTERED USERS</span><strong>{{ users_count }}</strong>
+          </div>
+        </div>
+        <div class="console-metric">
+          <div>
+            <span>SCAN RECORDS</span><strong>{{ scans_count }}</strong>
+          </div>
+        </div>
+        <div class="console-metric">
+          <div>
+            <span>REPORTS</span><strong>{{ reports|length }}</strong>
+          </div>
+        </div>
+      </div>
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">REPORT QUEUE</span>
+            <h2>Submitted reports</h2>
+          </div>
+        </div>
+        {% if reports %}
+        <div class="console-table-wrap">
+          <table class="console-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>URL</th>
+                <th>Details</th>
+                <th>Status</th>
+                <th>Update</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in reports %}
+              <tr>
+                <td>#{{ r['id'] }}</td>
+                <td class="url-cell">{{ r['url'] }}</td>
+                <td>{{ r['details'] or '—' }}</td>
+                <td>{{ r['status'] }}</td>
+                <td>
+                  <form method="post" action="{{ url_for('update_report_status', report_id=r['id']) }}">
+                    <input
+                      type="hidden"
+                      name="csrf_token"
+                      value="{{ csrf_token }}"
+                    />
+                    <select name="status" required>
+                      <option value="new"
+                        {{ 'selected' if r['status'] == 'new' else '' }}>
+                        New
+                      </option>
+                      <option value="triage"
+                        {{ 'selected' if r['status'] == 'triage' else '' }}>
+                        Triage
+                      </option>
+                      <option value="confirmed"
+                        {{ 'selected' if r['status'] == 'confirmed' else '' }}>
+                        Confirmed
+                      </option>
+                      <option value="false_positive"
+                        {{ 'selected' if r['status'] == 'false_positive' else '' }}>
+                        False positive
+                      </option>
+                    </select>
+                   <input
+                      name="note"
+                      maxlength="500"
+                      placeholder="Analyst note (optional)"
+                    />
+                    <button class="button secondary" type="submit">
+                      Save
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="empty-inline">
+          <strong>No reports yet</strong>
+          <p>Submitted suspicious URLs will appear here for review.</p>
+        </div>
+        {% endif %}
+      </section>
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">SECURITY EVENTS</span>
+            <h2>Recent audit log</h2>
+          </div>
+        </div>
+        <div class="console-table-wrap">
+          <table class="console-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Actor</th>
+                <th>Action</th>
+                <th>Resource</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for a in audit_rows %}
+              <tr>
+                <td>{{ a['created_at'] }}</td>
+                <td>{{ a['email'] or 'System/anonymous' }}</td>
+                <td>{{ a['action'] }}</td>
+                <td>{{ a['resource_id'] or '—' }}</td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="4">No events recorded yet.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
