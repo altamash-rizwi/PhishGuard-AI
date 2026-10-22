@@ -2,6 +2,7 @@ services:
   - type: web
     name: phishguard-ai
     runtime: python
+    rootDir: PhishGuard_AI_Website_Code
     plan: starter
     buildCommand: pip install -r requirements.txt
     startCommand: waitress-serve --host=0.0.0.0 --port=$PORT wsgi:app
