@@ -1,63 +1,263 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scan Result | PhishGuard AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-<header class="site-header">
-    <div class="container nav-container">
-        <a class="brand" href="{{ url_for('home') }}">PhishGuard AI</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Analysis Report | PhishGuard AI</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css', v='4') }}"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-container">
+        <a class="brand" href="{{ url_for('home') }}"
+          ><span class="brand-mark">PG</span
+          ><span
+            >PhishGuard <b>AI</b><small>URL INTELLIGENCE CONSOLE</small></span
+          ></a
+        >
         <nav class="main-nav">
-            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-            <a class="nav-link" href="{{ url_for('scanner') }}">Scanner</a>
-            <a class="nav-link active" href="{{ url_for('scan_result') }}">Result</a>
-            <a class="nav-link" href="{{ url_for('history') }}">History</a>
+          <a class="nav-link" href="{{ url_for('home') }}">Overview</a
+          ><a class="nav-link active" href="{{ url_for('scanner') }}">Scanner</a
+          ><a class="nav-link" href="{{ url_for('history') }}">Scan history</a
+          ><a class="nav-link" href="{{ url_for('security') }}">Security</a
+          ><a class="nav-link" href="{{ url_for('education') }}">Learn</a
+          ><a class="nav-link" href="{{ url_for('email_simulation') }}"
+            >Email simulation</a
+          ><a class="nav-link" href="{{ url_for('progress') }}">Progress</a>{%
+          if current_user %}<a
+            class="nav-link"
+            href="{{ url_for('admin_dashboard') if current_user['role'] in ['admin','analyst'] else url_for('progress') }}"
+            >{{ 'Admin' if current_user['role'] in ['admin','analyst'] else 'My
+            account' }}</a
+          >
+          <form
+            method="post"
+            action="{{ url_for('logout') }}"
+            style="display: inline"
+          >
+            <input
+              type="hidden"
+              name="csrf_token"
+              value="{{ csrf_token }}"
+            /><button class="nav-link" type="submit">Sign out</button>
+          </form>
+          {% else %}<a class="nav-link" href="{{ url_for('login') }}">Sign in</a
+          ><a class="nav-link" href="{{ url_for('register') }}">Register</a>{%
+          endif %}
         </nav>
-    </div>
-</header>
-<main class="container">
-<section class="page-heading">
-    <span class="eyebrow">LIVE URL ANALYSIS</span>
-    <h1>{{ result.label }}</h1>
-    <p>{{ result.message }}</p>
-</section>
-<section class="stats-grid">
-    <article class="stat-card"><span>URL</span><h2>{{ result.url }}</h2><p>Submitted URL</p></article>
-    <article class="stat-card"><span>MODEL SCORE</span><h2>{{ "%.2f"|format(result.model_score * 100) }}%</h2><p>Classifier output; not proof of safety</p></article>
-    <article class="stat-card"><span>THREAT</span><h2>{{ result.threat }}</h2><p>Combined model + domain assessment</p></article>
-    <article class="stat-card"><span>DOMAIN STATUS</span><h2 class="domain-status-value">{{ result.domain_status|replace('_', ' ')|title }}</h2><p>{{ result.domain_message }}</p></article>
-</section>
-<section class="content-section">
-    <div class="section-heading"><h2>Extracted URL Features</h2><p>These indicators include DNS verification and URL characteristics. DNS resolution does not prove that a website is trustworthy.</p></div>
-    <div class="card-grid">
-    {% for key, value in result.features.items() %}
-        <article class="info-card"><span class="card-number">{{ loop.index }}</span><h3>{{ key }}</h3><p>{{ value }}</p></article>
-    {% endfor %}
-    </div>
-</section>
-<section class="content-section">
-    <div class="section-heading"><h2>Security Recommendations</h2><p>Use these recommendations before sharing sensitive information.</p></div>
-    <div class="card-grid">
-    {% for item in result.recommendations %}
-        <article class="info-card"><span class="card-number">{{ loop.index }}</span><h3>Recommendation {{ loop.index }}</h3><p>{{ item }}</p></article>
-    {% endfor %}
-    </div>
-</section>
-<section class="content-section">
-    <div class="scanner-panel">
-        <h2>Important</h2>
-        <p>This is an academic prototype. The ML model analyses URL patterns; DNS verification checks whether the hostname resolves. Neither check proves that a website is safe. Do not enter passwords, OTPs, card numbers or other sensitive information into suspicious pages.</p>
-        <a class="button primary" href="{{ url_for('scanner') }}">Scan another URL</a>
-    </div>
-</section>
-</main>
-<footer class="site-footer"><div class="container footer-grid">
-<section><h2>PhishGuard AI</h2><p>AI-assisted URL analysis for safer browsing decisions.</p></section>
-<section><h2>Safety Notice</h2><p>Automated analysis is an additional signal, not a guarantee.</p></section>
-<section><h2>PBL Prototype</h2><p>AI-Based Phishing Detection and Secure Website Analysis System.</p></section>
-</div></footer>
-</body>
+      </div>
+    </header>
+    <main class="container page-shell">
+      <section class="page-heading result-heading">
+        <span class="eyebrow"
+          >SCAN REPORT · #{{ request.view_args.get('id', 'LATEST') if
+          request.view_args else 'LATEST' }}</span
+        >
+        <h1>{{ result.label }}</h1>
+        <p>{{ result.message }}</p>
+        <div class="scanned-url">↗ <code>{{ result.url }}</code></div>
+      </section>
+      <section class="report-grid">
+        <article class="risk-card">
+          <div class="risk-card-head">
+            <div>
+              <span class="metric-label">URL INDICATOR SCORE</span>
+              <h2>{{ result.risk_level }} risk indicators</h2>
+            </div>
+            <span
+              class="risk-badge {% if result.risk_level == 'High' %}risk-high{% elif result.risk_level == 'Moderate' %}risk-medium{% else %}risk-low{% endif %}"
+              >{{ result.risk_level|upper }}</span
+            >
+          </div>
+          <div class="score-row">
+            <div class="score-number">
+              {{ result.risk_score }}<span>/100</span>
+            </div>
+            <div class="score-caption">
+              Transparent heuristic score<br /><small
+                >Not a probability of phishing</small
+              >
+            </div>
+          </div>
+          <div class="score-track">
+            <span
+              class="score-fill {% if result.risk_level == 'High' %}fill-high{% elif result.risk_level == 'Moderate' %}fill-medium{% else %}fill-low{% endif %}"
+              style="width: {{ result.risk_score }}%"
+            ></span>
+          </div>
+          <div class="score-scale">
+            <span>0 · Few indicators</span><span>100 · Many indicators</span>
+          </div>
+          <p class="score-disclaimer">
+            This score adds configured URL warning signals. It is not validated
+            against a representative real-world dataset.
+          </p>
+          {% if result.domain_addresses %}
+          <p class="score-disclaimer">
+            <strong>DNS addresses:</strong> {{ result.domain_addresses|join(',
+            ') }}
+          </p>
+          {% endif %}
+        </article>
+        <article class="summary-card">
+          <span class="eyebrow">MODEL SIGNAL · EXPERIMENTAL</span>
+          <h2>{{ result.model_label }}</h2>
+          <p>
+            The demo ML model is displayed separately because its training data
+            has known limitations.
+          </p>
+          <div class="summary-divider"></div>
+          <div class="summary-line">
+            <span>Model status</span><strong>{{ result.model_status }}</strong>
+          </div>
+          <div class="summary-line">
+            <span>Model confidence</span
+            ><strong
+              >{% if result.confidence is not none %}{{
+              '%.1f'|format(result.confidence * 100) }}%
+              <small>(uncalibrated)</small>{% else %}Unavailable{% endif
+              %}</strong
+            >
+          </div>
+          <div class="summary-line">
+            <span>DNS status</span
+            ><strong>{{ result.domain_status|replace('_', ' ')|title }}</strong>
+          </div>
+          <div class="summary-line">
+            <span>Domain age</span><strong>{{ result.domain_age }}</strong>
+          </div>
+        </article>
+      </section>
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">WHY THIS SCORE</span>
+            <h2>Findings that added risk points</h2>
+          </div>
+          <p>Each item shows the rule that triggered and its contribution.</p>
+        </div>
+        {% if result.reasons %}
+        <div class="finding-list">
+          {% for reason in result.reasons %}
+          <article class="finding-card">
+            <div class="finding-symbol">!</div>
+            <div class="finding-copy">
+              <h3>{{ reason.title }}</h3>
+              <p>{{ reason.detail }}</p>
+            </div>
+            <span class="point-chip">+{{ reason.points }} pts</span>
+          </article>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-inline">
+          <span>✓</span>
+          <div>
+            <strong>No configured warning rules triggered</strong>
+            <p>
+              This is not proof that the destination is safe. New or
+              sophisticated phishing pages may not trigger these checks.
+            </p>
+          </div>
+        </div>
+        {% endif %}
+      </section>
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">URL & DOMAIN CHECKS</span>
+            <h2>Inspection checklist</h2>
+          </div>
+          <p>Structural checks only. The destination page was not fetched.</p>
+        </div>
+        <div class="checks-grid">
+          {% for check in result.checks %}
+          <article class="check-card">
+            <span class="check-state state-{{ check.state }}"
+              >{% if check.state == 'ok' %}✓{% elif check.state == 'caution'
+              %}!{% else %}i{% endif %}</span
+            >
+            <div>
+              <h3>{{ check.title }}</h3>
+              <p>{{ check.detail }}</p>
+            </div>
+            <span class="check-label"
+              >{% if check.state == 'ok' %}No flag{% elif check.state ==
+              'caution' %}Review{% else %}Context{% endif %}</span
+            >
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">EXTRACTED FEATURES</span>
+            <h2>Technical details</h2>
+          </div>
+        </div>
+        <div class="feature-grid">
+          {% for key, value in result.features.items() %}
+          <article class="feature-card">
+            <span>{{ key }}</span><strong>{{ value }}</strong>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">RECOMMENDED ACTION</span>
+            <h2>Stay safe</h2>
+          </div>
+        </div>
+        <div class="recommendation-grid">
+          {% for item in result.recommendations %}
+          <article class="recommendation-card">
+            <span>0{{ loop.index }}</span>
+            <p>{{ item }}</p>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="notice-banner">
+        <div class="notice-icon">!</div>
+        <div>
+          <strong>Do not treat a low score as a green light</strong>
+          <p>
+            This academic prototype is not a replacement for browser protections
+            or threat-intelligence services. Verify sensitive domains
+            independently and never enter passwords, OTPs or payment details
+            after following an unexpected link.
+          </p>
+        </div>
+      </section>
+      <div class="result-actions">
+        <a class="button primary" href="{{ url_for('scanner') }}"
+          >Scan another URL →</a
+        ><a class="button secondary" href="{{ url_for('history') }}"
+          >Open scan history</a
+        ><button
+          class="button secondary"
+          type="button"
+          data-print-report
+        >
+          Print / Save report
+        </button>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-line">
+        <span>PhishGuard AI · Explainable URL analysis</span
+        ><span>Results are indicative, not definitive.</span>
+      </div>
+    </footer>
+    <script
+      src="{{ url_for('static', filename='js/prototype.js', v='1') }}"
+      defer
+    ></script>
+  </body>
 </html>

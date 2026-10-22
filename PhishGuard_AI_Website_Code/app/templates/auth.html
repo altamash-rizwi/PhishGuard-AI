@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>
+      {{ 'Create account' if mode == 'register' else 'Sign in' }} | PhishGuard
+      AI
+    </title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-container">
+        <a class="brand" href="{{ url_for('home') }}"
+          ><span class="brand-mark">PG</span
+          ><span
+            >PhishGuard <b>AI</b><small>URL INTELLIGENCE CONSOLE</small></span
+          ></a
+        >
+        <nav class="main-nav">
+          <a class="nav-link" href="{{ url_for('scanner') }}">Scanner</a
+          ><a class="nav-link" href="{{ url_for('education') }}">Learn</a
+          ><a class="nav-link" href="{{ url_for('login') }}">Sign in</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container page-shell">
+      <section class="page-heading">
+        <span class="eyebrow">ACCOUNT ACCESS</span>
+        <h1>
+          {{ 'Create your account' if mode == 'register' else 'Welcome back' }}
+        </h1>
+        <p>Save your learning progress and use the PhishGuard dashboard.</p>
+      </section>
+      <section class="scanner-panel" style="max-width: 620px">
+        <form method="post">
+          <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token }}"
+          /><label for="email">Email address</label
+          ><input
+            id="email"
+            name="email"
+            type="email"
+            maxlength="254"
+            autocomplete="email"
+            required
+          /><label for="password">Password</label
+          ><input
+            id="password"
+            name="password"
+            type="password"
+            minlength="12"
+            autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}"
+            required
+          />{% with messages = get_flashed_messages(with_categories=true) %}{%
+          for category,message in messages %}
+          <p role="alert">{{ message }}</p>
+          {% endfor %}{% endwith %}<button class="button primary" type="submit">
+            {{ 'Create account' if mode == 'register' else 'Sign in' }}
+          </button>
+        </form>
+        <p>
+          {% if mode == 'register' %}Already registered?
+          <a href="{{ url_for('login') }}">Sign in</a>{% else %}New here?
+          <a href="{{ url_for('register') }}">Create an account</a>{% endif %}
+        </p>
+        <p class="form-hint">
+          Use a unique password. Production deployments should add email
+          verification, MFA and account recovery.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

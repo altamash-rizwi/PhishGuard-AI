@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Email Simulation | PhishGuard AI</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-container">
+        <a class="brand" href="{{ url_for('home') }}"
+          ><span class="brand-mark">PG</span
+          ><span
+            >PhishGuard <b>AI</b><small>SECURITY AWARENESS LAB</small></span
+          ></a
+        >
+        <nav class="main-nav">
+          <a class="nav-link" href="{{ url_for('education') }}">Learn</a
+          ><a class="nav-link" href="{{ url_for('quiz') }}">Quiz</a
+          ><a class="nav-link" href="{{ url_for('progress') }}">Progress</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container page-shell">
+      <section class="page-heading">
+        <span class="eyebrow">INTERACTIVE PRACTICE</span>
+        <h1>Phishing email simulation</h1>
+        <p>
+          Review a fictional example and choose whether it looks like phishing.
+          No real emails are sent.
+        </p>
+      </section>
+      <section class="scanner-panel" style="max-width: 850px">
+        <div class="summary-line">
+          <span>From</span><strong>{{ scenario.sender }}</strong>
+        </div>
+        <div class="summary-line">
+          <span>Subject</span><strong>{{ scenario.subject }}</strong>
+        </div>
+        <hr />
+        <p>{{ scenario.body }}</p>
+        <form method="post">
+          <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token }}"
+          /><input type="hidden" name="scenario_id" value="{{ scenario.id }}" />
+          <fieldset>
+            <legend>What is your assessment?</legend>
+            <label style="display: block; padding: 10px 0"
+              ><input type="radio" name="answer" value="phishing" required />
+              Phishing / suspicious</label
+            ><label style="display: block; padding: 10px 0"
+              ><input type="radio" name="answer" value="safer" required /> Fewer
+              obvious warning signs</label
+            >
+          </fieldset>
+          <button class="button primary" type="submit">Check my answer</button>
+        </form>
+        {% if feedback %}
+        <div class="notice-banner" style="margin-top: 20px">
+          <div class="notice-icon">{{ '✓' if feedback.correct else '!' }}</div>
+          <div>
+            <strong
+              >{{ 'Correct!' if feedback.correct else 'Review this example'
+              }}</strong
+            >
+            <p>{{ feedback.scenario.explanation }}</p>
+            <p>
+              <strong>Signals to notice:</strong> {{
+              feedback.scenario.signals|join(', ') }}
+            </p>
+          </div>
+        </div>
+        {% endif %}
+      </section>
+      <div class="result-actions">
+        <a class="button secondary" href="{{ url_for('education') }}"
+          >Back to lessons</a
+        ><a class="button primary" href="{{ url_for('quiz') }}"
+          >Take the quiz →</a
+        >
+      </div>
+    </main>
+  </body>
+</html>

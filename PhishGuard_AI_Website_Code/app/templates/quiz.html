@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Phishing Safety Quiz | PhishGuard AI</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css', v='5') }}"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-container">
+        <a class="brand" href="{{ url_for('home') }}">PhishGuard <b>AI</b></a>
+        <nav class="main-nav">
+          <a class="nav-link" href="{{ url_for('education') }}">Learn</a
+          ><a class="nav-link active" href="{{ url_for('quiz') }}">Quiz</a
+          ><a class="nav-link" href="{{ url_for('progress') }}">Progress</a
+          ><a class="nav-link" href="{{ url_for('email_simulation') }}"
+            >Email simulation</a
+          ><a class="nav-link" href="{{ url_for('progress') }}">Progress</a>{%
+          if current_user %}<a
+            class="nav-link"
+            href="{{ url_for('admin_dashboard') if current_user['role'] in ['admin','analyst'] else url_for('progress') }}"
+            >{{ 'Admin' if current_user['role'] in ['admin','analyst'] else 'My
+            account' }}</a
+          >
+          <form
+            method="post"
+            action="{{ url_for('logout') }}"
+            style="display: inline"
+          >
+            <input
+              type="hidden"
+              name="csrf_token"
+              value="{{ csrf_token }}"
+            /><button class="nav-link" type="submit">Sign out</button>
+          </form>
+          {% else %}<a class="nav-link" href="{{ url_for('login') }}">Sign in</a
+          ><a class="nav-link" href="{{ url_for('register') }}">Register</a>{%
+          endif %}
+        </nav>
+      </div>
+    </header>
+    <main class="container page-shell">
+      <section class="page-heading">
+        <span class="eyebrow">KNOWLEDGE CHECK</span>
+        <h1>Phishing safety quiz</h1>
+        <p>
+          Five questions. Feedback and explanations appear after submission.
+        </p>
+      </section>
+      {% if score is not none %}
+      <section class="notice-banner">
+        <div class="notice-icon">✓</div>
+        <div>
+          <strong>Your score: {{ score }}/{{ questions|length }}</strong>
+          <p>
+            {% if score >= 4 %}Strong work. Keep checking links carefully.{%
+            elif score >= 3 %}Good start. Review the explanations below.{% else
+            %}Review the lessons and try again.{% endif %}
+          </p>
+        </div>
+      </section>
+      <div class="workflow-grid">
+        {% for item in review %}
+        <article class="workflow-card">
+          <span class="step-num">{{ '✓' if item.correct else '!' }}</span>
+          <h3>{{ loop.index }}. {{ item.question }}</h3>
+          <p><strong>Your answer:</strong> {{ item.chosen }}</p>
+          <p><strong>Correct answer:</strong> {{ item.answer }}</p>
+          <p>{{ item.explanation }}</p>
+        </article>
+        {% endfor %}
+      </div>
+      <div class="result-actions">
+        <a class="button primary" href="{{ url_for('quiz') }}">Try again</a
+        ><a class="button secondary" href="{{ url_for('progress') }}"
+          >View progress</a
+        >
+      </div>
+      {% else %}
+      <form method="post" class="quiz-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />{% for
+        item in questions %}
+        <fieldset class="scanner-panel" style="margin-bottom: 18px">
+          <legend><strong>{{ loop.index }}. {{ item.q }}</strong></legend>
+          {% for option in item.options %}<label
+            style="display: block; padding: 10px 0"
+            ><input
+              type="radio"
+              name="q{{ loop.index0 }}"
+              value="{{ loop.index0 }}"
+              required
+            />
+            {{ option }}</label
+          >{% endfor %}
+        </fieldset>
+        {% endfor %}<button class="button primary" type="submit">
+          Submit answers →
+        </button>
+      </form>
+      {% endif %}
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-line">
+        <span>PhishGuard AI · Practice mode</span
+        ><span>Educational content only</span>
+      </div>
+    </footer>
+  </body>
+</html>

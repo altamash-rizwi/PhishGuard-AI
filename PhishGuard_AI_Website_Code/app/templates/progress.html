@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Learning Progress | PhishGuard AI</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css', v='5') }}"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-container">
+        <a class="brand" href="{{ url_for('home') }}">PhishGuard <b>AI</b></a>
+        <nav class="main-nav">
+          <a class="nav-link" href="{{ url_for('education') }}">Learn</a
+          ><a class="nav-link" href="{{ url_for('quiz') }}">Quiz</a
+          ><a class="nav-link active" href="{{ url_for('progress') }}"
+            >Progress</a
+          ><a class="nav-link" href="{{ url_for('report_phishing') }}"
+            >Report phishing</a
+          ><a class="nav-link" href="{{ url_for('email_simulation') }}"
+            >Email simulation</a
+          ><a class="nav-link" href="{{ url_for('progress') }}">Progress</a>{%
+          if current_user %}<a
+            class="nav-link"
+            href="{{ url_for('admin_dashboard') if current_user['role'] in ['admin','analyst'] else url_for('progress') }}"
+            >{{ 'Admin' if current_user['role'] in ['admin','analyst'] else 'My
+            account' }}</a
+          >
+          <form
+            method="post"
+            action="{{ url_for('logout') }}"
+            style="display: inline"
+          >
+            <input
+              type="hidden"
+              name="csrf_token"
+              value="{{ csrf_token }}"
+            /><button class="nav-link" type="submit">Sign out</button>
+          </form>
+          {% else %}<a class="nav-link" href="{{ url_for('login') }}">Sign in</a
+          ><a class="nav-link" href="{{ url_for('register') }}">Register</a>{%
+          endif %}
+        </nav>
+      </div>
+    </header>
+    <main class="container page-shell">
+      <section class="page-heading">
+        <span class="eyebrow">YOUR LEARNING DASHBOARD</span>
+        <h1>Progress overview</h1>
+        <p>
+          Learning activity and quiz attempts saved by this local prototype.
+        </p>
+      </section>
+      <section class="report-grid">
+        <article class="risk-card">
+          <span class="metric-label">LESSONS COMPLETED</span>
+          <div class="score-row">
+            <div class="score-number">
+              {{ completed_keys|length }}<span>/{{ lessons|length }}</span>
+            </div>
+          </div>
+          <div class="score-track">
+            <span
+              class="score-fill fill-low"
+              style="width: {{ (completed_keys|length * 100 / lessons|length)|int }}%"
+            ></span>
+          </div>
+        </article>
+        <article class="summary-card">
+          <span class="eyebrow">ACTIVITY</span>
+          <h2>{{ total_scans }} scans · {{ total_reports }} reports</h2>
+          <p>Scan history and submitted reports are stored in SQLite.</p>
+          <div class="summary-line">
+            <span>Recent quiz attempts</span
+            ><strong>{{ attempts|length }}</strong>
+          </div>
+          {% if latest %}
+          <div class="summary-line">
+            <span>Latest quiz</span
+            ><strong>{{ latest['score'] }}/{{ latest['total'] }}</strong>
+          </div>
+          {% endif %}
+        </article>
+      </section>
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">LESSON CHECKLIST</span>
+            <h2>Learning path</h2>
+          </div>
+        </div>
+        <div class="finding-list">
+          {% for lesson in lessons %}
+          <article class="finding-card">
+            <div class="finding-symbol">
+              {{ '✓' if lesson.key in completed_keys else loop.index }}
+            </div>
+            <div class="finding-copy">
+              <h3>{{ lesson.title }}</h3>
+              <p>
+                {{ 'Completed' if lesson.key in completed_keys else 'Not
+                completed yet' }}
+              </p>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">QUIZ HISTORY</span>
+            <h2>Recent attempts</h2>
+          </div>
+        </div>
+        {% if attempts %}
+        <div class="finding-list">
+          {% for attempt in attempts %}
+          <article class="finding-card">
+            <div class="finding-symbol">{{ loop.index }}</div>
+            <div class="finding-copy">
+              <h3>{{ attempt['score'] }}/{{ attempt['total'] }} correct</h3>
+              <p>{{ attempt['created_at'] }}</p>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-inline">
+          <div>
+            <strong>No quiz attempts yet</strong>
+            <p>Take the five-question quiz to start tracking results.</p>
+          </div>
+        </div>
+        {% endif %}
+      </section>
+      <div class="result-actions">
+        <a class="button primary" href="{{ url_for('education') }}"
+          >Continue learning</a
+        ><a class="button secondary" href="{{ url_for('quiz') }}">Take quiz</a>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-line">
+        <span>PhishGuard AI · Progress</span><span>Stored locally</span>
+      </div>
+    </footer>
+  </body>
+</html>
