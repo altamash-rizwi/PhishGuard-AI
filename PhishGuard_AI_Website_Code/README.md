@@ -42,19 +42,23 @@ production.
 
 The included `render.yaml` Blueprint prepares the `phishguard-ai` web service
 with Waitress, Render's assigned port, `/healthz`, a generated application
-secret, the Render hostname allowlist, and a persistent 1 GB disk mounted at
-`/var/data`. The app and maintenance scripts use `DB_PATH` so SQLite and
-maintenance tasks point to the configured database. Review Render plan and
-persistent-disk costs before applying the Blueprint. If you rename the service
-or add a custom domain, update `TRUSTED_HOSTS` to include the actual hostnames.
+secret, and the Render hostname allowlist on a Free web service. Its SQLite
+database is placed at `/tmp/scan_history.db` on the ephemeral filesystem. This
+is a demo configuration only: Render can spin the service down after inactivity,
+and its local files (including scans, accounts, reports, and learning progress)
+are lost on spin-down, restart, or redeploy. Free services may also take about
+a minute to wake. Do not use this configuration for real users or data that
+must be retained.
+
 The Blueprint prompts you to provide the initial admin email and a unique
 password through Render's environment settings; use a password of at least 12
-characters and keep it out of source control.
+characters and keep it out of source control. If you rename the service or add a
+custom domain, update `TRUSTED_HOSTS` to include the actual hostnames.
 
-The persistent disk protects SQLite across app deploys, but it is not a backup.
-The Blueprint does not schedule encrypted off-host backups, retention jobs, or
-alerting. Configure these independently and test a restore before storing real
-user reports.
+For production use, change to a paid service plan with a persistent disk (or
+migrate to a managed database), then configure encrypted off-host backups,
+retention jobs, and alerting. A persistent disk is not itself a backup; test a
+restore before storing real user reports.
 
 For a local admin account, set both variables before starting the app (use your own credentials):
 

@@ -15,10 +15,14 @@
   The app refuses production startup if these requirements are missing.
 - Run `waitress-serve --listen=127.0.0.1:5000 wsgi:app` behind a maintained
   reverse proxy that terminates TLS. Keep the Waitress port private.
-- On Render, review/apply `render.yaml`. The Blueprint starts Waitress on the
-  platform port and mounts its persistent disk at `/var/data`; it sets
-  `DB_PATH=/var/data/scan_history.db`. If the service name or custom domains
-  change, update `TRUSTED_HOSTS` to the actual hostnames.
+- The current Render Blueprint is a free demo: it starts Waitress on the
+  platform port and sets `DB_PATH=/tmp/scan_history.db` without a persistent
+  disk. Render free web services spin down after inactivity, and local files are
+  lost on spin-down, restart, or redeploy. Do not use this configuration for
+  real users or data that must be retained. For production, use a paid service
+  with a persistent disk or migrate to a managed database, and configure
+  encrypted off-host backups. If the service name or custom domains change,
+  update `TRUSTED_HOSTS` to the actual hostnames.
 - Configure HTTPS redirects, HSTS, firewalling, access controls, and log
   rotation at the reverse proxy/host. Flask's development server is blocked
   when `APP_ENV=production`.
@@ -38,14 +42,16 @@
 
 ## Data and backup
 
-The default local SQLite database is `app/scan_history.db`. On Render the
-Blueprint stores it on the persistent disk at `/var/data/scan_history.db`.
-Create a consistent live backup
+The default local SQLite database is `app/scan_history.db`. The Render free
+demo stores SQLite at `/tmp/scan_history.db`; that file is ephemeral and must
+not be treated as a backup or durable storage. For a paid Render deployment
+with a persistent disk, set `DB_PATH` to a location on that disk. Create a
+consistent live backup
 with `py scripts\backup_database.py`; backups are stored in the ignored
 `backups/` directory by default. Restrict access, encrypt backups at rest, keep
 off-host copies, and regularly test restoring into a separate database.
-Set `DB_PATH` for the backup/retention scripts when managing the Render
-database. The Render disk survives service deploys but is not an off-host
+Set `DB_PATH` for the backup/retention scripts when managing a durable
+database. A persistent disk survives service deploys but is not an off-host
 backup.
 
 The default retention policy is 90 days for scans, reports, learning progress,
