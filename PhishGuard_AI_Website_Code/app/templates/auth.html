@@ -28,51 +28,95 @@
         </nav>
       </div>
     </header>
-    <main class="container page-shell">
-      <section class="page-heading">
+    <main class="container page-shell auth-page">
+      <section class="auth-intro">
         <span class="eyebrow">ACCOUNT ACCESS</span>
         <h1>
           {{ 'Create your account' if mode == 'register' else 'Welcome back' }}
         </h1>
-        <p>Save your learning progress and use the PhishGuard dashboard.</p>
+        <p>
+          {{ 'Create an account to keep your learning progress together.' if
+          mode == 'register' else 'Sign in to pick up where you left off.' }}
+        </p>
+        <div class="auth-benefits">
+          <div class="auth-benefit">
+            <span class="auth-benefit-icon" aria-hidden="true">✓</span>
+            <div>
+              <strong>Keep your progress</strong>
+              <p>Lessons and quiz results stay connected to your account.</p>
+            </div>
+          </div>
+          <div class="auth-benefit">
+            <span class="auth-benefit-icon" aria-hidden="true">⌁</span>
+            <div>
+              <strong>Practice safely</strong>
+              <p>Explore security exercises without sending real messages.</p>
+            </div>
+          </div>
+        </div>
+        <p class="auth-note">
+          Use a unique password. This demo does not offer email verification,
+          MFA, or account recovery.
+        </p>
       </section>
-      <section class="scanner-panel" style="max-width: 620px">
-        <form method="post">
-          <input
-            type="hidden"
-            name="csrf_token"
-            value="{{ csrf_token }}"
-          /><label for="email">Email address</label
-          ><input
-            id="email"
-            name="email"
-            type="email"
-            maxlength="254"
-            autocomplete="email"
-            required
-          /><label for="password">Password</label
-          ><input
-            id="password"
-            name="password"
-            type="password"
-            minlength="12"
-            autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}"
-            required
-          />{% with messages = get_flashed_messages(with_categories=true) %}{%
-          for category,message in messages %}
-          <p role="alert">{{ message }}</p>
-          {% endfor %}{% endwith %}<button class="button primary" type="submit">
+      <section class="auth-card" aria-labelledby="auth-form-title">
+        <div class="auth-card-heading">
+          <span class="auth-card-icon" aria-hidden="true">PG</span>
+          <div>
+            <span class="eyebrow">PHISHGUARD AI</span>
+            <h2 id="auth-form-title">
+              {{ 'Create account' if mode == 'register' else 'Sign in' }}
+            </h2>
+          </div>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category,message in messages %}
+        <div class="flash flash-{{ category }}" role="alert">{{ message }}</div>
+        {% endfor %}
+        {% endwith %}
+        <form class="auth-form" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+          <div class="auth-field">
+            <label for="email">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              maxlength="254"
+              autocomplete="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+          <div class="auth-field">
+            <label for="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              minlength="12"
+              autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}"
+              placeholder="{{ 'At least 12 characters' if mode == 'register' else 'Enter your password' }}"
+              required
+            />
+            {% if mode == 'register' %}
+            <span class="auth-field-hint">Use at least 12 characters.</span>
+            {% endif %}
+          </div>
+          <button class="button primary auth-submit" type="submit">
             {{ 'Create account' if mode == 'register' else 'Sign in' }}
+            <span aria-hidden="true">→</span>
           </button>
         </form>
-        <p>
-          {% if mode == 'register' %}Already registered?
-          <a href="{{ url_for('login') }}">Sign in</a>{% else %}New here?
+        <p class="auth-switch">
+          {% if mode == 'register' %}Already have an account?
+          <a href="{{ url_for('login') }}">Sign in</a>{% else %}New to
+          PhishGuard?
           <a href="{{ url_for('register') }}">Create an account</a>{% endif %}
         </p>
-        <p class="form-hint">
-          Use a unique password. Production deployments should add email
-          verification, MFA and account recovery.
+        <p class="auth-privacy">
+          <span aria-hidden="true">●</span> Your password is stored as a secure
+          hash.
         </p>
       </section>
     </main>
