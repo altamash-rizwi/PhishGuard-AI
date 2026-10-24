@@ -28,11 +28,22 @@
     <main class="container page-shell simulation-page">
       <section class="page-heading">
         <span class="eyebrow">SECURITY AWARENESS LAB</span>
-        <h1>Phishing email simulation</h1>
+        <h1>Practice spotting suspicious emails</h1>
         <p>
-          Inspect this fictional inbox message, look for warning signs, and
-          decide how you would handle it. No real emails are sent.
+          Read each fictional message, choose the best assessment, then check
+          the explanation. This is a safe practice exercise; nothing is sent.
         </p>
+      </section>
+      <section class="simulation-howto" aria-label="How this exercise works">
+        <div class="simulation-howto-title">
+          <span class="eyebrow">HOW TO USE THIS PAGE</span>
+          <strong>Three quick steps</strong>
+        </div>
+        <ol>
+          <li><span>1</span><strong>Read</strong> the sender and message.</li>
+          <li><span>2</span><strong>Choose</strong> whether it looks suspicious.</li>
+          <li><span>3</span><strong>Check</strong> your answer and learn why.</li>
+        </ol>
       </section>
       <div class="simulation-layout">
         <section class="simulation-main" aria-label="Email practice scenario">
@@ -41,8 +52,26 @@
               <span></span><span></span><span></span>
             </div>
             <span>TRAINING INBOX</span>
-            <span class="simulation-demo-tag">DEMO ONLY</span>
+            <span class="simulation-demo-tag">FICTIONAL EXAMPLE</span>
           </div>
+          <nav class="scenario-picker" aria-label="Choose a practice email">
+            <div class="scenario-picker-heading">
+              <span>Practice emails</span>
+              <strong>Example {{ scenario_index + 1 }} of {{ scenarios|length }}</strong>
+            </div>
+            <div class="scenario-picker-options">
+              {% for item in scenarios %}
+              <a
+                class="scenario-picker-option{% if item.id == scenario.id %} active{% endif %}"
+                href="{{ url_for('email_simulation', scenario=item.id) }}"
+                {% if item.id == scenario.id %}aria-current="step"{% endif %}
+              >
+                <span class="scenario-picker-number">0{{ loop.index }}</span>
+                <span>{{ item.subject }}</span>
+              </a>
+              {% endfor %}
+            </div>
+          </nav>
           <article class="email-card">
             <div class="email-card-heading">
               <div class="email-avatar" aria-hidden="true">
@@ -62,7 +91,7 @@
               <p>{{ scenario.body }}</p>
               <div class="email-link-placeholder" aria-label="Inactive example link">
                 <span aria-hidden="true">↗</span>
-                <span>Example link disabled in this exercise</span>
+                <span>Example link (disabled for safety)</span>
                 <span class="email-link-lock" aria-hidden="true">⌑</span>
               </div>
             </div>
@@ -77,15 +106,15 @@
             <fieldset>
               <legend>
                 <span class="eyebrow">YOUR TURN</span>
-                <strong>How would you classify this email?</strong>
+                <strong>What should you do with this email?</strong>
               </legend>
               <div class="answer-options">
                 <label class="answer-option">
                   <input type="radio" name="answer" value="phishing" required />
                   <span class="answer-choice-icon answer-risk" aria-hidden="true">!</span>
                   <span>
-                    <strong>Phishing / suspicious</strong>
-                    <small>It contains warning signs I would verify.</small>
+                    <strong>It looks suspicious</strong>
+                    <small>I would not click or reply; I would verify it another way.</small>
                   </span>
                   <span class="answer-radio" aria-hidden="true"></span>
                 </label>
@@ -93,8 +122,8 @@
                   <input type="radio" name="answer" value="safer" required />
                   <span class="answer-choice-icon answer-safe" aria-hidden="true">✓</span>
                   <span>
-                    <strong>Fewer obvious warning signs</strong>
-                    <small>I would still verify anything important.</small>
+                    <strong>No obvious warning signs</strong>
+                    <small>I would still verify important messages independently.</small>
                   </span>
                   <span class="answer-radio" aria-hidden="true"></span>
                 </label>
@@ -115,8 +144,12 @@
             </span>
             <div>
               <strong>
-                {{ 'Nice catch!' if feedback.correct else 'Let’s review the clues' }}
+                {{ 'That’s right!' if feedback.correct else 'Not quite—here’s what to notice' }}
               </strong>
+              <p class="feedback-choice">
+                You chose: {{ 'It looks suspicious' if feedback.chosen == 'phishing' else 'No obvious warning signs' }}.
+                The best answer is {{ 'It looks suspicious' if feedback.scenario.answer == 'phishing' else 'No obvious warning signs' }}.
+              </p>
               <p>{{ feedback.scenario.explanation }}</p>
               <p class="feedback-signals">
                 <strong>Signals to notice:</strong>
@@ -128,9 +161,9 @@
         </section>
         <aside class="simulation-sidebar">
           <div class="simulation-progress">
-            <span class="eyebrow">PRACTICE ROUND</span>
-            <strong>Spot the red flags</strong>
-            <p>Look for pressure, unusual requests, and sender details that do not add up.</p>
+            <span class="eyebrow">WHAT TO LOOK FOR</span>
+            <strong>Pause before you trust</strong>
+            <p>Check whether the message pressures you, asks for secrets, or comes from an unexpected sender.</p>
           </div>
           <div class="signal-guide">
             <h2>What to check</h2>
@@ -143,7 +176,7 @@
           </div>
           <div class="simulation-reminder">
             <span aria-hidden="true">↗</span>
-            <p>When unsure, visit the official app or website directly—not a link in the message.</p>
+            <p>Unsure? Open the official app or type its known website address yourself. Don’t use the message link.</p>
           </div>
         </aside>
       </div>

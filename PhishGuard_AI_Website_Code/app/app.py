@@ -725,10 +725,19 @@ def email_simulation():
         sid = request.form.get("scenario_id", "")
         answer = request.form.get("answer", "")
         scenario = next((x for x in EMAIL_SCENARIOS if x["id"] == sid), None)
-        if scenario:
+        if scenario and answer in {"phishing", "safer"}:
             feedback = {"correct": answer == scenario["answer"], "chosen": answer, "scenario": scenario}
-    scenario = scenario or EMAIL_SCENARIOS[0]
-    return render_template("email_simulation.html", scenario=scenario, feedback=feedback, scenarios=EMAIL_SCENARIOS)
+    if not scenario:
+        sid = request.args.get("scenario", "")
+        scenario = next((x for x in EMAIL_SCENARIOS if x["id"] == sid), EMAIL_SCENARIOS[0])
+    scenario_index = EMAIL_SCENARIOS.index(scenario)
+    return render_template(
+        "email_simulation.html",
+        scenario=scenario,
+        feedback=feedback,
+        scenarios=EMAIL_SCENARIOS,
+        scenario_index=scenario_index,
+    )
 
 @app.route("/api/v1/csrf", methods=["GET"])
 def api_csrf_token():

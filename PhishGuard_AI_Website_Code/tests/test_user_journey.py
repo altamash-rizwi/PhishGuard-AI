@@ -36,10 +36,26 @@ def test_email_simulation_page():
     client = pg.app.test_client()
     response = client.get("/email-simulation")
     assert response.status_code == 200
-    assert b"Phishing email simulation" in response.data
+    assert b"Practice spotting suspicious emails" in response.data
+    assert b"Three quick steps" in response.data
     assert b"simulation-layout" in response.data
     assert b"TRAINING INBOX" in response.data
-    assert b"Example link disabled in this exercise" in response.data
+    assert b"Example link (disabled for safety)" in response.data
+    assert b"Example 1 of 3" in response.data
+    assert b"Choose a practice email" in response.data
+
+def test_email_simulation_can_select_each_scenario():
+    client = pg.app.test_client()
+    response = client.get("/email-simulation?scenario=routine")
+    assert response.status_code == 200
+    assert b"Your monthly statement is ready" in response.data
+    assert b"Example 2 of 3" in response.data
+
+def test_email_simulation_invalid_scenario_falls_back_to_first_example():
+    response = pg.app.test_client().get("/email-simulation?scenario=unknown")
+    assert response.status_code == 200
+    assert b"Delivery address problem" in response.data
+    assert b"Example 1 of 3" in response.data
 
 def test_email_simulation_feedback_uses_selected_scenario():
     client = pg.app.test_client()
@@ -50,8 +66,23 @@ def test_email_simulation_feedback_uses_selected_scenario():
         "answer": "phishing",
     })
     assert response.status_code == 200
-    assert b"Nice catch!" in response.data
+    assert b"That\xe2\x80\x99s right!" in response.data
+    assert b"You chose: It looks suspicious." in response.data
+    assert b"The best answer is It looks suspicious." in response.data
     assert b"Unexpected urgency" in response.data
+
+def test_email_simulation_explains_incorrect_answer():
+    client = pg.app.test_client()
+    token = csrf_token(client, "/email-simulation")
+    response = client.post("/email-simulation", data={
+        "csrf_token": token,
+        "scenario_id": "delivery",
+        "answer": "safer",
+    })
+    assert response.status_code == 200
+    assert b"Not quite\xe2\x80\x94here\xe2\x80\x99s what to notice" in response.data
+    assert b"You chose: No obvious warning signs." in response.data
+    assert b"The best answer is It looks suspicious." in response.data
 
 def test_auth_pages_render_separate_labeled_fields():
     client = pg.app.test_client()
