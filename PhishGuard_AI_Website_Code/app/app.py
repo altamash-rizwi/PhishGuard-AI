@@ -66,7 +66,19 @@ if APP_ENV == "production":
 _RATE_BUCKETS = {}
 
 
-DB = Path(os.environ.get("DB_PATH", str(BASE / "scan_history.db"))).expanduser()
+def ensure_db_directory(db_path):
+    if db_path is None:
+        return None
+    value = str(db_path).strip()
+    if not value or value.lower() == ":memory:":
+        return db_path
+    path = Path(value).expanduser()
+    if path.parent != Path(""):
+        path.parent.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+DB = ensure_db_directory(os.environ.get("DB_PATH") or str(BASE / "scan_history.db"))
 MODEL = BASE.parent / "models" / "final_random_forest.pkl"
 VECTORIZER = BASE.parent / "models" / "final_tfidf_vectorizer.pkl"
 DEMO_MODEL = BASE / "model.pkl"
@@ -97,7 +109,8 @@ SHORTENERS = {"bit.ly", "tinyurl.com", "t.co", "is.gd", "cutt.ly", "rb.gy", "sho
 
 @contextmanager
 def db():
-    con = sqlite3.connect(DB)
+    resolved_db = ensure_db_directory(DB)
+    con = sqlite3.connect(resolved_db)
     con.row_factory = sqlite3.Row
     try:
         with con:

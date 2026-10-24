@@ -26,6 +26,13 @@ def test_production_settings_require_secret_hosts_and_debug_off():
         app_module.validate_production_settings("production", "x" * 32, "0", [])
 
 
+def test_init_db_creates_missing_database_directory(monkeypatch, tmp_path):
+    nested_db = tmp_path / "nested" / "data" / "scan_history.db"
+    monkeypatch.setattr(app_module, "DB", nested_db)
+    app_module.init_db()
+    assert nested_db.exists()
+
+
 def test_normalize_rejects_non_http_scheme():
     try:
         app_module.normalize_url("javascript:alert(1)")
