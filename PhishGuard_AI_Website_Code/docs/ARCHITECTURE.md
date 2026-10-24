@@ -6,7 +6,7 @@
 Browser
   -> Flask routes and server-rendered templates
       -> URL normalization and feature extraction
-      -> heuristic rule scoring + experimental ML inference
+      -> heuristic rule scoring + optional approved ML candidate inference
       -> SQLite: scans, users, reports, report reviews, lessons, quiz attempts, audit logs
       -> optional DNS resolution / WHOIS lookup (never fetches submitted page)
 ```

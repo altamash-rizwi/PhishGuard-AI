@@ -84,11 +84,12 @@ Home → Scan URL → Review rule reasons and ML signal → Learn red flags → 
 - `/api/v1/...` — versioned JSON endpoints; see `docs/API.md`
 - `docs/PRODUCT_SCOPE.md` — included features and production gaps
 - `docs/ARCHITECTURE.md` — architecture overview
+- `docs/MODEL_EVALUATION.md` — dataset, validation results, and limitations
 - `docs/FINAL_CHECKLIST.md` — project review checklist
 
 ## Security and model limitations
 
-The heuristic score is an indicator summary, not a calibrated probability. ML confidence is uncalibrated and the demo model has known data-quality limitations. A low score does not prove a site is safe. The server does not open submitted URLs. Reports are saved locally and are not sent to an external organization. Do not deploy publicly without completing the hardening checklist in `docs/PRODUCT_SCOPE.md`.
+The heuristic score is an indicator summary, not a calibrated probability. The previous toy ML model is disabled and no model is bundled as production-ready. To evaluate a candidate, install requirements and run `python scripts/download_datasets.py`, then `python scripts/train_and_evaluate.py`. This uses PhiUSIIL from UCI with registrable-domain-separated cross-validation. For a strict forward-time external test, run `python scripts/evaluate_live_feeds.py` periodically after candidate training; it collects new PhishTank and Tranco snapshots and reports no metrics until enough post-training samples exist. See `docs/MODEL_EVALUATION.md` for the observed cross-source stress-test failure and readiness requirements. The candidate is not loaded by the app. A low rule score does not prove a site is safe. The server does not open submitted URLs. Reports are saved locally and are not sent to an external organization. Do not deploy publicly without completing the hardening checklist in `docs/PRODUCT_SCOPE.md`.
 
 ## Tests
 
@@ -96,9 +97,8 @@ The heuristic score is an indicator summary, not a calibrated probability. ML co
 py -m pytest -q
 ```
 
-Dependency versions are pinned in `requirements.txt`; the scikit-learn pin
-matches the bundled model artifacts. Run the suite after installing those exact
-versions.
+Dependency versions are pinned in `requirements.txt`; install them before
+running the tests or the model evaluation workflow.
 
 ## Backups and retention
 

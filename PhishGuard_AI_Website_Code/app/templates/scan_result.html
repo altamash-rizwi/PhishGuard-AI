@@ -103,18 +103,18 @@
           {% endif %}
         </article>
         <article class="summary-card">
-          <span class="eyebrow">MODEL SIGNAL · EXPERIMENTAL</span>
+          <span class="eyebrow">MODEL SIGNAL</span>
           <h2>{{ result.model_label }}</h2>
           <p>
-            The demo ML model is displayed separately because its training data
-            has known limitations.
+            A model is available only after an operator explicitly promotes a
+            reviewed candidate. Model output is not a safety verdict.
           </p>
           <div class="summary-divider"></div>
           <div class="summary-line">
             <span>Model status</span><strong>{{ result.model_status }}</strong>
           </div>
           <div class="summary-line">
-            <span>Model confidence</span
+            <span>Uncalibrated phishing score</span
             ><strong
               >{% if result.confidence is not none %}{{
               '%.1f'|format(result.confidence * 100) }}%

@@ -53,6 +53,35 @@ def test_features_and_score_explanations():
     assert {"No HTTPS", "At-sign in URL"}.issubset({r["title"] for r in reasons})
 
 
+def test_predict_reports_phishing_class_score_not_max_class_score(monkeypatch):
+    class FakeVectorizer:
+        def transform(self, urls):
+            return urls
+
+    class FakeModel:
+        classes_ = [0, 1]
+
+        def predict(self, _features):
+            return [0]
+
+        def predict_proba(self, _features):
+            return [[0.99, 0.01]]
+
+    monkeypatch.setattr(app_module, "vectorizer", FakeVectorizer())
+    monkeypatch.setattr(app_module, "model", FakeModel())
+    monkeypatch.setattr(app_module, "check_domain", lambda _url: {
+        "status": "resolves",
+        "message": "The hostname resolves in DNS.",
+        "addresses": ["192.0.2.1"],
+    })
+    monkeypatch.setattr(app_module, "domain_age", lambda _url: "Unavailable (test)")
+
+    result = app_module.predict("https://ordinary.example")
+
+    assert result["model_label"] == "Potentially Legitimate"
+    assert result["confidence"] == pytest.approx(0.01)
+
+
 def test_scanner_page():
     response = app_module.app.test_client().get("/scanner")
     assert response.status_code == 200

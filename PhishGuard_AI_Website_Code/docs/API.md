@@ -29,3 +29,8 @@ All routes are local to the Flask application and use `/api/v1/` versioning. JSO
 ## Safety notes
 
 The scanner does not fetch the submitted page. JSON API responses are a prototype contract and may evolve; this MVP does not yet implement a distributed task queue or production token-refresh system.
+
+The scan response's `model_confidence_uncalibrated` value is the optional
+model's uncalibrated score for the phishing class, not a calibrated probability.
+It is `null` unless an operator has explicitly promoted model artifacts. The
+heuristic `risk_score` is a separate indicator score and is not a probability.
