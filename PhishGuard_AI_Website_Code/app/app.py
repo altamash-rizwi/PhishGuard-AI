@@ -1,8 +1,9 @@
 """PhishGuard AI - explainable URL risk assessment prototype.
 
-Important: the demo classifier was trained on a weak dataset. The transparent
-heuristic score is an indicator summary, not a calibrated probability or verdict.
-The application never opens the submitted destination URL.
+Important: no ML classifier is loaded unless an operator explicitly promotes
+a reviewed candidate. The heuristic score is an indicator summary, not a
+calibrated probability or verdict. The application never opens the submitted
+destination URL.
 """
 from flask import Flask, render_template, request, redirect, url_for, flash, session, abort, jsonify
 from urllib.parse import urlparse, unquote
@@ -79,22 +80,21 @@ def ensure_db_directory(db_path):
 
 
 DB = ensure_db_directory(os.environ.get("DB_PATH") or str(BASE / "scan_history.db"))
-MODEL = BASE.parent / "models" / "final_random_forest.pkl"
-VECTORIZER = BASE.parent / "models" / "final_tfidf_vectorizer.pkl"
-DEMO_MODEL = BASE / "model.pkl"
-DEMO_VECTORIZER = BASE / "vectorizer.pkl"
+MODEL = BASE.parent / "models" / "approved_url_model.pkl"
+VECTORIZER = BASE.parent / "models" / "approved_url_vectorizer.pkl"
 
 model = vectorizer = None
-for model_path, vector_path in ((MODEL, VECTORIZER), (DEMO_MODEL, DEMO_VECTORIZER)):
+if MODEL.is_file() and VECTORIZER.is_file():
     try:
-        with open(model_path, "rb") as f:
+        with open(MODEL, "rb") as f:
             candidate_model = pickle.load(f)
-        with open(vector_path, "rb") as f:
+        with open(VECTORIZER, "rb") as f:
             candidate_vectorizer = pickle.load(f)
         model, vectorizer = candidate_model, candidate_vectorizer
-        break
     except Exception as exc:
-        app.logger.warning("Could not load model artifacts from %s: %s", model_path.parent, exc)
+        app.logger.warning("Could not load approved model artifacts from %s: %s", MODEL.parent, exc)
+elif MODEL.exists() != VECTORIZER.exists():
+    app.logger.error("Approved model and vectorizer must both be present in %s.", MODEL.parent)
 
 RECOMMENDATIONS = [
     "Do not enter passwords, OTPs or payment details on an unverified page.",
@@ -501,10 +501,16 @@ def predict(url):
             pred = int(model.predict(x)[0])
             ml_label = "Potential Phishing" if pred == 1 else "Potentially Legitimate"
             probs = model.predict_proba(x)[0] if hasattr(model, "predict_proba") else None
-            ml_confidence = float(max(probs)) if probs is not None else None
+            classes = list(getattr(model, "classes_", []))
+            phishing_index = classes.index(1) if 1 in classes else None
+            ml_confidence = (
+                float(probs[phishing_index])
+                if probs is not None and phishing_index is not None
+                else None
+            )
         except Exception as exc:
             app.logger.warning("Model inference failed: %s", exc)
-    # Display an indicator-based assessment; don't let the weak demo model dominate it.
+    # Keep the URL indicator verdict separate from the optional model output.
     if domain_check["status"] == "not_resolving":
         label, threat = "Unverified / Domain Not Resolving", "Unverified"
         message = "The hostname could not be resolved by DNS from this environment. This may mean the domain is invalid or the network lookup failed; it is not a definitive phishing verdict."
@@ -527,7 +533,7 @@ def predict(url):
         "reasons": reasons, "checks": checks, "model_label": ml_label,
         "domain_status": domain_check["status"], "domain_message": domain_check["message"],
         "domain_addresses": domain_check["addresses"],
-        "model_status": "Available (experimental demo model)" if ml_confidence is not None else "Unavailable",
+        "model_status": "Available (uncalibrated candidate)" if ml_confidence is not None else "Unavailable",
     }
 
 

@@ -282,7 +282,7 @@
               <div class="engine-copy">
                 <strong>Layered inspection</strong>
                 <p>Structure · wording · host format · DNS context</p>
-                <span class="experimental-tag">ML signal: experimental</span>
+                <span class="experimental-tag">{% if ml_available %}ML signal: uncalibrated{% else %}ML candidate: not enabled{% endif %}</span>
               </div>
             </div>
             <div class="engine-checks">
@@ -337,9 +337,9 @@
           <div>
             <strong>Model limitation</strong>
             <p>
-              The bundled demo model has known dataset duplication and
-              label-leakage issues. Do not interpret model confidence or a low
-              indicator score as a safety guarantee.
+              The previous toy model is disabled. No model is loaded until a
+              candidate has been reviewed and explicitly promoted. A low
+              indicator score is not a safety guarantee.
             </p>
           </div>
         </section>

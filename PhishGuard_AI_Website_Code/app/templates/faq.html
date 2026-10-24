@@ -82,9 +82,10 @@
         <details class="faq-item">
           <summary>Why is the ML output marked experimental?</summary>
           <p>
-            The bundled demo dataset has known duplicate rows and a URL-scheme
-            label proxy. The resulting model confidence should not be treated as
-            a trustworthy real-world probability.
+            The earlier bundled demo model was trained on a tiny, duplicated
+            dataset and is no longer loaded. The app uses no model unless an
+            operator explicitly promotes a reviewed candidate. Candidate scores
+            are uncalibrated and are not real-world phishing probabilities.
           </p>
         </details>
         <details class="faq-item">

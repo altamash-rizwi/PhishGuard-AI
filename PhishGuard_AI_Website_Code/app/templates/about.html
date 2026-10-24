@@ -60,13 +60,13 @@
         <h2>A cybersecurity learning prototype</h2>
         <p style="color: var(--muted)">
           PhishGuard combines a Flask web application, URL feature inspection,
-          an experimental text-classification model, and SQLite scan history to
-          demonstrate an end-to-end analysis workflow.
+          an offline-evaluated text-classification candidate, and SQLite scan
+          history to demonstrate an end-to-end analysis workflow.
         </p>
         <p style="color: var(--muted)">
-          The project emphasizes explainability and honest evaluation. The
-          bundled demo model has known data-quality limitations and is not a
-          production phishing-detection service.
+          The project emphasizes explainability and honest evaluation. No ML
+          model is enabled by default; evaluated candidates still require
+          independent, later-dated validation before they can be promoted.
         </p>
         <div class="result-actions">
           <a class="button primary" href="{{ url_for('scanner') }}"

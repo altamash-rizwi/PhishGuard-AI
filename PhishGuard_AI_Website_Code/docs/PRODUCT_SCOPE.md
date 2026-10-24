@@ -3,7 +3,7 @@
 ## Included in this MVP package
 
 - Responsive Flask interface and existing explainable URL scan result.
-- Rule-based URL indicator score and separate experimental ML signal.
+- Rule-based URL indicator score; no ML model is loaded unless a candidate is explicitly promoted.
 - SQLite scan history scoped to the current account/session for newly created records.
 - Account registration and login with password hashing; optional admin bootstrap via environment variables.
 - Role-gated analyst/admin console for report triage and status changes.
@@ -15,7 +15,7 @@
 
 ## Deliberate limitations
 
-This is a local academic MVP, not a production-ready threat-intelligence service. The URL scanner does not fetch the destination page, follow redirects, or safely detonate files. DNS resolution and optional WHOIS lookup may disclose the hostname to DNS/WHOIS infrastructure. The bundled ML model has known training-data quality problems and its confidence is uncalibrated. Reports are stored locally and are not automatically submitted to Google Safe Browsing, CERT-In, a bank, or law enforcement.
+This is a local academic MVP, not a production-ready threat-intelligence service. The URL scanner does not fetch the destination page, follow redirects, or safely detonate files. DNS resolution and optional WHOIS lookup may disclose the hostname to DNS/WHOIS infrastructure. No ML model is enabled by default. Candidates are evaluated on UCI PhiUSIIL with registrable-domain-separated folds, but the source has no per-URL timestamps; this is not independent temporal validation, and the classifier scores are uncalibrated. Reports are stored locally and are not automatically submitted to Google Safe Browsing, CERT-In, a bank, or law enforcement.
 
 ## Before public deployment
 

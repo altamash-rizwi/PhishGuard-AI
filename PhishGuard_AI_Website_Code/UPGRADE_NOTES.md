@@ -11,10 +11,12 @@
 - `tests/test_upgrade.py`: regression checks for normalization, scoring explanations, scan report, and history.
 
 ## Important limitation
-The score is a transparent heuristic indicator score, not a calibrated phishing probability. The bundled model is labeled experimental because the demo dataset has known duplicates and label leakage. The app does not fetch the target page or follow redirects. Optional WHOIS lookup may be unavailable depending on network access.
+The score is a transparent heuristic indicator score, not a calibrated phishing probability. The previous toy model and artifacts are removed; a candidate trained from PhiUSIIL is not enabled in the app until reviewed and promoted. Its evaluation is domain-held-out but not time-based, and its output is uncalibrated. The app does not fetch the target page or follow redirects. Optional WHOIS lookup may be unavailable depending on network access.
 
 ## Verification status
-Python syntax is checked with `py_compile`. Automated Flask tests could not be executed in the current build environment because Flask is not installed here and package installation is blocked by unavailable network access. Run `py -m pip install -r requirements.txt` and `pytest -q` on the project machine before presenting.
+Automated test coverage and current model-evaluation results are documented in
+`docs/MODEL_EVALUATION.md`; rerun `py -m pytest -q` and the documented UCI
+workflow after changing code, model features, or the dataset.
 
 
 ## Console visual refresh
