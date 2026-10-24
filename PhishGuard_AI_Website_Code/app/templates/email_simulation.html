@@ -25,59 +25,128 @@
         </nav>
       </div>
     </header>
-    <main class="container page-shell">
+    <main class="container page-shell simulation-page">
       <section class="page-heading">
-        <span class="eyebrow">INTERACTIVE PRACTICE</span>
+        <span class="eyebrow">SECURITY AWARENESS LAB</span>
         <h1>Phishing email simulation</h1>
         <p>
-          Review a fictional example and choose whether it looks like phishing.
-          No real emails are sent.
+          Inspect this fictional inbox message, look for warning signs, and
+          decide how you would handle it. No real emails are sent.
         </p>
       </section>
-      <section class="scanner-panel" style="max-width: 850px">
-        <div class="summary-line">
-          <span>From</span><strong>{{ scenario.sender }}</strong>
-        </div>
-        <div class="summary-line">
-          <span>Subject</span><strong>{{ scenario.subject }}</strong>
-        </div>
-        <hr />
-        <p>{{ scenario.body }}</p>
-        <form method="post">
-          <input
-            type="hidden"
-            name="csrf_token"
-            value="{{ csrf_token }}"
-          /><input type="hidden" name="scenario_id" value="{{ scenario.id }}" />
-          <fieldset>
-            <legend>What is your assessment?</legend>
-            <label style="display: block; padding: 10px 0"
-              ><input type="radio" name="answer" value="phishing" required />
-              Phishing / suspicious</label
-            ><label style="display: block; padding: 10px 0"
-              ><input type="radio" name="answer" value="safer" required /> Fewer
-              obvious warning signs</label
-            >
-          </fieldset>
-          <button class="button primary" type="submit">Check my answer</button>
-        </form>
-        {% if feedback %}
-        <div class="notice-banner" style="margin-top: 20px">
-          <div class="notice-icon">{{ '✓' if feedback.correct else '!' }}</div>
-          <div>
-            <strong
-              >{{ 'Correct!' if feedback.correct else 'Review this example'
-              }}</strong
-            >
-            <p>{{ feedback.scenario.explanation }}</p>
-            <p>
-              <strong>Signals to notice:</strong> {{
-              feedback.scenario.signals|join(', ') }}
-            </p>
+      <div class="simulation-layout">
+        <section class="simulation-main" aria-label="Email practice scenario">
+          <div class="simulation-toolbar">
+            <div class="simulation-window-dots" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <span>TRAINING INBOX</span>
+            <span class="simulation-demo-tag">DEMO ONLY</span>
           </div>
-        </div>
-        {% endif %}
-      </section>
+          <article class="email-card">
+            <div class="email-card-heading">
+              <div class="email-avatar" aria-hidden="true">
+                {{ scenario.sender[0]|upper }}
+              </div>
+              <div class="email-sender">
+                <strong>{{ scenario.sender }}</strong>
+                <span>To: you <span aria-hidden="true">⌄</span></span>
+              </div>
+              <span class="email-time">Just now</span>
+            </div>
+            <div class="email-subject">
+              <span>SUBJECT</span>
+              <h2>{{ scenario.subject }}</h2>
+            </div>
+            <div class="email-message">
+              <p>{{ scenario.body }}</p>
+              <div class="email-link-placeholder" aria-label="Inactive example link">
+                <span aria-hidden="true">↗</span>
+                <span>Example link disabled in this exercise</span>
+                <span class="email-link-lock" aria-hidden="true">⌑</span>
+              </div>
+            </div>
+            <div class="email-safety-note">
+              <span aria-hidden="true">i</span>
+              This is a fictional training message. Links are not active.
+            </div>
+          </article>
+          <form class="simulation-answer" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+            <input type="hidden" name="scenario_id" value="{{ scenario.id }}" />
+            <fieldset>
+              <legend>
+                <span class="eyebrow">YOUR TURN</span>
+                <strong>How would you classify this email?</strong>
+              </legend>
+              <div class="answer-options">
+                <label class="answer-option">
+                  <input type="radio" name="answer" value="phishing" required />
+                  <span class="answer-choice-icon answer-risk" aria-hidden="true">!</span>
+                  <span>
+                    <strong>Phishing / suspicious</strong>
+                    <small>It contains warning signs I would verify.</small>
+                  </span>
+                  <span class="answer-radio" aria-hidden="true"></span>
+                </label>
+                <label class="answer-option">
+                  <input type="radio" name="answer" value="safer" required />
+                  <span class="answer-choice-icon answer-safe" aria-hidden="true">✓</span>
+                  <span>
+                    <strong>Fewer obvious warning signs</strong>
+                    <small>I would still verify anything important.</small>
+                  </span>
+                  <span class="answer-radio" aria-hidden="true"></span>
+                </label>
+              </div>
+            </fieldset>
+            <button class="button primary" type="submit">
+              Check my answer <span aria-hidden="true">→</span>
+            </button>
+          </form>
+          {% if feedback %}
+          <div
+            class="simulation-feedback {{ 'feedback-correct' if feedback.correct else 'feedback-review' }}"
+            role="status"
+            aria-live="polite"
+          >
+            <span class="feedback-icon" aria-hidden="true">
+              {{ '✓' if feedback.correct else '!' }}
+            </span>
+            <div>
+              <strong>
+                {{ 'Nice catch!' if feedback.correct else 'Let’s review the clues' }}
+              </strong>
+              <p>{{ feedback.scenario.explanation }}</p>
+              <p class="feedback-signals">
+                <strong>Signals to notice:</strong>
+                {{ feedback.scenario.signals|join(' · ') }}
+              </p>
+            </div>
+          </div>
+          {% endif %}
+        </section>
+        <aside class="simulation-sidebar">
+          <div class="simulation-progress">
+            <span class="eyebrow">PRACTICE ROUND</span>
+            <strong>Spot the red flags</strong>
+            <p>Look for pressure, unusual requests, and sender details that do not add up.</p>
+          </div>
+          <div class="signal-guide">
+            <h2>What to check</h2>
+            <ul>
+              <li><span aria-hidden="true">01</span> Who sent the message?</li>
+              <li><span aria-hidden="true">02</span> Is it creating urgency?</li>
+              <li><span aria-hidden="true">03</span> Does it ask for sensitive info?</li>
+              <li><span aria-hidden="true">04</span> Can you verify it independently?</li>
+            </ul>
+          </div>
+          <div class="simulation-reminder">
+            <span aria-hidden="true">↗</span>
+            <p>When unsure, visit the official app or website directly—not a link in the message.</p>
+          </div>
+        </aside>
+      </div>
       <div class="result-actions">
         <a class="button secondary" href="{{ url_for('education') }}"
           >Back to lessons</a

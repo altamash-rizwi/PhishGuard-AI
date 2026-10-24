@@ -37,6 +37,32 @@ def test_email_simulation_page():
     response = client.get("/email-simulation")
     assert response.status_code == 200
     assert b"Phishing email simulation" in response.data
+    assert b"simulation-layout" in response.data
+    assert b"TRAINING INBOX" in response.data
+    assert b"Example link disabled in this exercise" in response.data
+
+def test_email_simulation_feedback_uses_selected_scenario():
+    client = pg.app.test_client()
+    token = csrf_token(client, "/email-simulation")
+    response = client.post("/email-simulation", data={
+        "csrf_token": token,
+        "scenario_id": "delivery",
+        "answer": "phishing",
+    })
+    assert response.status_code == 200
+    assert b"Nice catch!" in response.data
+    assert b"Unexpected urgency" in response.data
+
+def test_auth_pages_render_separate_labeled_fields():
+    client = pg.app.test_client()
+    login = client.get("/login")
+    register = client.get("/register")
+    assert login.status_code == register.status_code == 200
+    assert b'class="auth-card"' in login.data
+    assert b'for="email"' in login.data and b'for="password"' in login.data
+    assert b"current-password" in login.data
+    assert b"new-password" in register.data
+    assert b"Use at least 12 characters." in register.data
 
 def test_registration_and_admin_routes_exist():
     client = pg.app.test_client()
