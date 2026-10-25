@@ -21,8 +21,8 @@
   instance. Review current compute and disk pricing in Render before applying
   the Blueprint; this configuration can incur charges. If the service name or
   custom domains change, update `TRUSTED_HOSTS` to the exact public hostnames.
-- The Blueprint is at the Git repository root as `render.yaml`; its `rootDir`
-  points to `PhishGuard_AI_Website_Code`. Configure the initial admin email
+- The existing Blueprint is configured to read
+  `PhishGuard_AI_Website_Code/render.yaml`. Configure the initial admin email
   and a unique password in Render's environment settings; never commit
   credentials.
 - Configure HTTPS redirects, HSTS, firewalling, access controls, and log

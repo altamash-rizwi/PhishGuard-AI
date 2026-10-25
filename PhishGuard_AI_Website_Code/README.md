@@ -40,7 +40,7 @@ production.
 
 ### Render deployment
 
-The root `render.yaml` Blueprint configures the
+The `PhishGuard_AI_Website_Code/render.yaml` Blueprint configures the
 `phishguard-ai` service on Render's paid `starter` plan with Waitress,
 `/healthz`, a generated application secret, the service hostname allowlist,
 and a 1 GB persistent disk mounted at `/var/data`. SQLite is placed at
@@ -48,12 +48,12 @@ and a 1 GB persistent disk mounted at `/var/data`. SQLite is placed at
 disk requires one service instance and is not a backup. Review Render's current
 compute and disk pricing before applying this Blueprint; it can incur charges.
 
-The Blueprint file is at the repository root, with `rootDir` pointing to the
-application subdirectory. Connect the repository to Render and create the
-Blueprint from its root `render.yaml`. Configure the initial admin email and a
-unique password directly in Render's environment settings; never commit
-credentials. Keep `TRUSTED_HOSTS` aligned with the actual Render hostname and
-any custom domains.
+The existing Render Blueprint is configured to read
+`PhishGuard_AI_Website_Code/render.yaml`. Connect the repository to Render and
+use that path when creating or updating the Blueprint. Configure the initial
+admin email and a unique password directly in Render's environment settings;
+never commit credentials. Keep `TRUSTED_HOSTS` aligned with the actual Render
+hostname and any custom domains.
 
 The Blueprint prompts you to provide the initial admin email and a unique
 password through Render's environment settings; use a password of at least 12
