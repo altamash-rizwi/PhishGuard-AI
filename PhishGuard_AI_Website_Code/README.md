@@ -38,15 +38,16 @@ controls, log rotation, and host-level firewall rules at the reverse proxy and
 operating-system layers. Do not use the local development setup scripts in
 production.
 
-### Render deployment
+### Render Free demo
 
-The `PhishGuard_AI_Website_Code/render.yaml` Blueprint configures the
-`phishguard-ai` service on Render's paid `starter` plan with Waitress,
-`/healthz`, a generated application secret, the service hostname allowlist,
-and a 1 GB persistent disk mounted at `/var/data`. SQLite is placed at
-`/var/data/scan_history.db`, so it survives deploys and restarts. The persistent
-disk requires one service instance and is not a backup. Review Render's current
-compute and disk pricing before applying this Blueprint; it can incur charges.
+The `PhishGuard_AI_Website_Code/render.yaml` Blueprint configures
+`phishguard-ai` on Render's Free plan with Waitress, `/healthz`, a generated
+application secret, and the service hostname allowlist. SQLite is placed at
+`/tmp/scan_history.db` on ephemeral storage. Free services spin down after
+inactivity, can take time to wake, and lose local data on spin-down, restart,
+or redeploy. **This is a demo deployment only: do not use it for real users or
+data that must be retained.** Use a paid service with persistent storage or a
+managed database for production.
 
 The existing Render Blueprint is configured to read
 `PhishGuard_AI_Website_Code/render.yaml`. Connect the repository to Render and
@@ -64,9 +65,9 @@ different hostname or you add a custom domain, update the environment variable
 in the Render dashboard; otherwise Flask will reject requests, including health
 checks.
 
-Before accepting real user reports, configure encrypted off-host backups,
-retention jobs, monitoring/alerting, and a tested restore process. The SQLite
-disk is single-instance storage and not designed for horizontal scaling.
+Do not accept real user reports on this Free demo because its local database is
+ephemeral. For production, configure durable storage, encrypted off-host
+backups, retention jobs, monitoring/alerting, and a tested restore process.
 
 For a local admin account, set both variables before starting the app (use your own credentials):
 

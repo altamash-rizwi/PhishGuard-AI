@@ -3,14 +3,10 @@ services:
     name: phishguard-ai
     runtime: python
     rootDir: PhishGuard_AI_Website_Code
-    plan: starter
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: waitress-serve --host=0.0.0.0 --port=$PORT wsgi:app
     healthCheckPath: /healthz
-    disk:
-      name: phishguard-data
-      mountPath: /var/data
-      sizeGB: 1
     envVars:
       - key: APP_ENV
         value: production
@@ -21,7 +17,7 @@ services:
       - key: TRUSTED_HOSTS
         value: phishguard-ai-7pzp.onrender.com
       - key: DB_PATH
-        value: /var/data/scan_history.db
+        value: /tmp/scan_history.db
       - key: PHISHGUARD_ADMIN_EMAIL
         sync: false
       - key: PHISHGUARD_ADMIN_PASSWORD

@@ -15,12 +15,13 @@
   The app refuses production startup if these requirements are missing.
 - Run `waitress-serve --listen=127.0.0.1:5000 wsgi:app` behind a maintained
   reverse proxy that terminates TLS. Keep the Waitress port private.
-- The Render Blueprint uses the paid `starter` web-service plan and a 1 GB
-  persistent disk mounted at `/var/data`; SQLite is configured at
-  `/var/data/scan_history.db`. The attached disk requires a single service
-  instance. Review current compute and disk pricing in Render before applying
-  the Blueprint; this configuration can incur charges. If the service name or
-  custom domains change, update `TRUSTED_HOSTS` to the exact public hostnames.
+- The Render Blueprint uses the Free web-service plan and stores SQLite at
+  `/tmp/scan_history.db` on ephemeral storage. The service may spin down after
+  inactivity, and all local data can be lost on spin-down, restart, or
+  redeploy. This is demo-only; do not use it for real users or data that must
+  be retained. For production, migrate to a paid service with persistent
+  storage or a managed database. If the service name or custom domains change,
+  update `TRUSTED_HOSTS` to the exact public hostnames.
 - The existing Blueprint is configured to read
   `PhishGuard_AI_Website_Code/render.yaml`. Configure the initial admin email
   and a unique password in Render's environment settings; never commit
@@ -44,16 +45,16 @@
 
 ## Data and backup
 
-The default local SQLite database is `app/scan_history.db`. Render stores the
-production SQLite database at `/var/data/scan_history.db` on its persistent
-disk. Create a consistent live backup
+The default local SQLite database is `app/scan_history.db`. The Render Free
+demo stores SQLite at `/tmp/scan_history.db` on ephemeral storage. Data can be
+lost when the service spins down, restarts, or redeploys; this is not durable
+storage or a backup. Do not store real user data on the Free demo. For a
+production deployment, use durable storage and create a consistent live backup
 with `py scripts\backup_database.py`; backups are stored in the ignored
 `backups/` directory by default. Restrict access, encrypt backups at rest, keep
 off-host copies, and regularly test restoring into a separate database.
-Set `DB_PATH=/var/data/scan_history.db` for the backup/retention scripts when
-running them against the Render database. A persistent disk survives service
-deploys but is not an off-host backup; configure and test off-host backups
-before accepting real user data.
+Set `DB_PATH` to the durable database path for the backup/retention scripts
+when running them against a production deployment.
 
 The default retention policy is 90 days for scans, reports, learning progress,
 and quiz attempts, and 365 days for audit and report-review history. Review
