@@ -15,14 +15,16 @@
   The app refuses production startup if these requirements are missing.
 - Run `waitress-serve --listen=127.0.0.1:5000 wsgi:app` behind a maintained
   reverse proxy that terminates TLS. Keep the Waitress port private.
-- The current Render Blueprint is a free demo: it starts Waitress on the
-  platform port and sets `DB_PATH=/tmp/scan_history.db` without a persistent
-  disk. Render free web services spin down after inactivity, and local files are
-  lost on spin-down, restart, or redeploy. Do not use this configuration for
-  real users or data that must be retained. For production, use a paid service
-  with a persistent disk or migrate to a managed database, and configure
-  encrypted off-host backups. If the service name or custom domains change,
-  update `TRUSTED_HOSTS` to the actual hostnames.
+- The Render Blueprint uses the paid `starter` web-service plan and a 1 GB
+  persistent disk mounted at `/var/data`; SQLite is configured at
+  `/var/data/scan_history.db`. The attached disk requires a single service
+  instance. Review current compute and disk pricing in Render before applying
+  the Blueprint; this configuration can incur charges. If the service name or
+  custom domains change, update `TRUSTED_HOSTS` to the exact public hostnames.
+- The Blueprint is at the Git repository root as `render.yaml`; its `rootDir`
+  points to `PhishGuard_AI_Website_Code`. Configure the initial admin email
+  and a unique password in Render's environment settings; never commit
+  credentials.
 - Configure HTTPS redirects, HSTS, firewalling, access controls, and log
   rotation at the reverse proxy/host. Flask's development server is blocked
   when `APP_ENV=production`.
@@ -42,17 +44,16 @@
 
 ## Data and backup
 
-The default local SQLite database is `app/scan_history.db`. The Render free
-demo stores SQLite at `/tmp/scan_history.db`; that file is ephemeral and must
-not be treated as a backup or durable storage. For a paid Render deployment
-with a persistent disk, set `DB_PATH` to a location on that disk. Create a
-consistent live backup
+The default local SQLite database is `app/scan_history.db`. Render stores the
+production SQLite database at `/var/data/scan_history.db` on its persistent
+disk. Create a consistent live backup
 with `py scripts\backup_database.py`; backups are stored in the ignored
 `backups/` directory by default. Restrict access, encrypt backups at rest, keep
 off-host copies, and regularly test restoring into a separate database.
-Set `DB_PATH` for the backup/retention scripts when managing a durable
-database. A persistent disk survives service deploys but is not an off-host
-backup.
+Set `DB_PATH=/var/data/scan_history.db` for the backup/retention scripts when
+running them against the Render database. A persistent disk survives service
+deploys but is not an off-host backup; configure and test off-host backups
+before accepting real user data.
 
 The default retention policy is 90 days for scans, reports, learning progress,
 and quiz attempts, and 365 days for audit and report-review history. Review

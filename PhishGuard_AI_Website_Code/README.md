@@ -38,17 +38,22 @@ controls, log rotation, and host-level firewall rules at the reverse proxy and
 operating-system layers. Do not use the local development setup scripts in
 production.
 
-### Render
+### Render deployment
 
-The included `render.yaml` Blueprint prepares the `phishguard-ai` web service
-with Waitress, Render's assigned port, `/healthz`, a generated application
-secret, and the Render hostname allowlist on a Free web service. Its SQLite
-database is placed at `/tmp/scan_history.db` on the ephemeral filesystem. This
-is a demo configuration only: Render can spin the service down after inactivity,
-and its local files (including scans, accounts, reports, and learning progress)
-are lost on spin-down, restart, or redeploy. Free services may also take about
-a minute to wake. Do not use this configuration for real users or data that
-must be retained.
+The root `render.yaml` Blueprint configures the
+`phishguard-ai` service on Render's paid `starter` plan with Waitress,
+`/healthz`, a generated application secret, the service hostname allowlist,
+and a 1 GB persistent disk mounted at `/var/data`. SQLite is placed at
+`/var/data/scan_history.db`, so it survives deploys and restarts. The persistent
+disk requires one service instance and is not a backup. Review Render's current
+compute and disk pricing before applying this Blueprint; it can incur charges.
+
+The Blueprint file is at the repository root, with `rootDir` pointing to the
+application subdirectory. Connect the repository to Render and create the
+Blueprint from its root `render.yaml`. Configure the initial admin email and a
+unique password directly in Render's environment settings; never commit
+credentials. Keep `TRUSTED_HOSTS` aligned with the actual Render hostname and
+any custom domains.
 
 The Blueprint prompts you to provide the initial admin email and a unique
 password through Render's environment settings; use a password of at least 12
@@ -59,10 +64,9 @@ different hostname or you add a custom domain, update the environment variable
 in the Render dashboard; otherwise Flask will reject requests, including health
 checks.
 
-For production use, change to a paid service plan with a persistent disk (or
-migrate to a managed database), then configure encrypted off-host backups,
-retention jobs, and alerting. A persistent disk is not itself a backup; test a
-restore before storing real user reports.
+Before accepting real user reports, configure encrypted off-host backups,
+retention jobs, monitoring/alerting, and a tested restore process. The SQLite
+disk is single-instance storage and not designed for horizontal scaling.
 
 For a local admin account, set both variables before starting the app (use your own credentials):
 
